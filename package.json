@@ -1,14 +1,14 @@
 {
-  "name": "@aiou/rollup-plugin-template",
+  "name": "rollup-plugin-condition-exports",
   "version": "0.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/spring-catponents/actions-template#readme",
+  "homepage": "https://github.com/JiangWeixian/rollup-plugin-condition-exports#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spring-catponents/actions-template.git"
+    "url": "git+https://github.com/JiangWeixian/rollup-plugin-condition-exports.git"
   },
   "bugs": {
-    "url": "https://github.com/spring-catponents/actions-template/issues",
+    "url": "https://github.com/JiangWeixian/rollup-plugin-condition-exports/issues",
     "email": "jiangweixian1994@gmail.com"
   },
   "author": {
@@ -16,12 +16,11 @@
     "email": "jiangweixian1994@gmail.com",
     "url": "https://twitter.com/jiangweixian"
   },
-  "main": "lib/rollup-plugin-template.cjs.js",
-  "module": "lib/rollup-plugin-template.esm.js",
-  "browser": "lib/rollup-plugin-template.umd.js",
+  "main": "lib/rollup-plugin-condition-exports.cjs.js",
+  "module": "lib/rollup-plugin-condition-exports.esm.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "build": "rimraf lib && rollup -c --silent",
+    "build": "rollup -c --silent",
     "dev": "rollup -c -w --silent",
     "test": "jest",
     "pretest": "pnpm run build",
