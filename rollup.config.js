@@ -4,7 +4,7 @@ import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-fr
 import bundleSize from 'rollup-plugin-bundle-size'
 import pkg from './package.json'
 
-import plugin from './lib/rollup-plugin-condition-exports.esm.js'
+// import plugin from './lib/rollup-plugin-condition-exports.esm.js'
 
 export default [
   // CommonJS (for Node) and ES module (for bundlers) build.
@@ -26,7 +26,7 @@ export default [
         peerDependencies: true,
       }),
       bundleSize(),
-      plugin(),
+      // plugin(),
     ],
     output: [
       { file: pkg.main, format: 'cjs' },
