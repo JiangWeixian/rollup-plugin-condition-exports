@@ -1,21 +1,20 @@
-# @aiou/rollup-plugin-template
-*rollup-plugin-template with typescript, a fork version of [rollup/rollup-starter-plugin](https://github.com/rollup/rollup-starter-plugin)*
+# rollup-plugin-condition-exports
+*auto set conditions exports on package file*
 
-[![npm](https://img.shields.io/npm/v/@aiou/rollup-plugin-template)](https://github.com/spring-catponents/rollup-plugin-template) [![GitHub](https://img.shields.io/npm/l/@aiou/rollup-plugin-template)](https://github.com/spring-catponents/rollup-plugin-template) [![stackblitz](https://img.shields.io/badge/%E2%9A%A1%EF%B8%8Fstackblitz-online-blue)](https://stackblitz.com/github/spring-catponents/rollup-plugin-template)
+[![npm](https://img.shields.io/npm/v/rollup-plugin-condition-exports)](https://github.com/JiangWeixian/rollup-plugin-condition-exports) [![GitHub](https://img.shields.io/npm/l/rollup-plugin-condition-exports)](https://github.com/JiangWeixian/rollup-plugin-condition-exports) [![stackblitz](https://img.shields.io/badge/%E2%9A%A1%EF%B8%8Fstackblitz-online-blue)](https://stackblitz.com/github/JiangWeixian/rollup-plugin-condition-exports)
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/github/spring-catponents/rollup-plugin-template)
-
-## features
-
-- 📊 Stats - output bag bundlesize
-- 📦 exclude `dependencies` and `peerDependencies`
-- 💪 Typescript - type safe
+[Edit on StackBlitz ⚡️](https://stackblitz.com/github/JiangWeixian/rollup-plugin-condition-exports)
 
 ## install
 
 ```console
-pnpm add @aiou/rollup-plugin-template
+pnpm add rollup-plugin-condition-exports
 ```
+
+## usage
+
+> **💡 NOTE**  
+make sure `tsconfig.json dist` same as `rollup.config.js output.dir`
 
 ## development
 
