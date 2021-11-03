@@ -3,6 +3,7 @@ import setValue from 'set-value'
 import path from 'path'
 import fs from 'fs-extra'
 import debug from 'debug'
+import { createFilter } from 'rollup-pluginutils'
 
 type Output = Record<string, string | undefined> & {
   exports?: Record<string, any>
@@ -21,6 +22,7 @@ const log = debug(NAME)
 export default function plugin(): Plugin {
   let hasTs = false
   let shouldRun = false
+  const filter = createFilter([], [/tslib/g])
   return {
     name: NAME,
     /* Type: (options: OutputOptions, bundle: { [fileName: string]: AssetInfo | ChunkInfo }, isWrite: boolean) => void  */
@@ -37,35 +39,60 @@ export default function plugin(): Plugin {
     },
 
     generateBundle(options, bundle, _isWrite) {
-      const prefix = options.dir ? `./${options.dir}` : '.'
-      const dir = options.dir ?? ''
-      shouldRun = !!dir
+      const dir = options.dir === '.' ? '' : options.dir || ''
+      shouldRun = !!options.dir
+      if (!shouldRun) {
+        log('Skip because of not in dir mode')
+      }
       if (options.format === 'cjs') {
         if (options.dir) {
-          output.main = `${options.dir}/index.js`
+          output.main = path.join(dir, 'index.js')
           Object.keys(bundle).forEach((filename) => {
+            // tslib
+            if (!filter(filename)) {
+              return
+            }
+            // types files
             if (path.extname(filename) === '.ts') {
               return
             }
-            setValue(output, `exports/.\\/${strip(filename)}/require`, `${prefix}/${filename}`, {
-              separator: '/',
-            })
+            setValue(
+              output,
+              `exports/.\\/${strip(filename)}/require`,
+              `./${path.join(dir, filename)}`,
+              {
+                separator: '/',
+              },
+            )
           })
         }
       }
       if (options.format === 'es') {
         if (options.dir) {
-          output.module = `${options.dir}/index.es.js`
+          output.module = path.join(dir, 'index.es.js')
           Object.keys(bundle).forEach((filename) => {
-            if (path.extname(filename) === '.ts') {
-              setValue(output, `exports/.\\/${strip(filename)}/types`, `${prefix}/${filename}`, {
-                separator: '/',
-              })
+            if (!filter(filename)) {
               return
             }
-            setValue(output, `exports/.\\/${strip(filename)}/import`, `${prefix}/${filename}`, {
-              separator: '/',
-            })
+            if (path.extname(filename) === '.ts') {
+              setValue(
+                output,
+                `exports/.\\/${strip(filename)}/types`,
+                `./${path.join(dir, filename)}`,
+                {
+                  separator: '/',
+                },
+              )
+              return
+            }
+            setValue(
+              output,
+              `exports/.\\/${strip(filename)}/import`,
+              `./${path.join(dir, filename)}`,
+              {
+                separator: '/',
+              },
+            )
           })
         }
       }
@@ -84,7 +111,6 @@ export default function plugin(): Plugin {
       if (shouldRun) {
         const pkg = fs.readJSONSync(path.resolve(process.cwd(), 'package.json'))
         const next = Object.assign(pkg, output)
-        log('%O', next)
         fs.writeJSONSync(path.resolve(process.cwd(), 'package.json'), next, {
           spaces: 2,
         })
