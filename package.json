@@ -16,6 +16,9 @@
     "email": "jiangweixian1994@gmail.com",
     "url": "https://twitter.com/jiangweixian"
   },
+  "files": [
+    "lib"
+  ],
   "main": "lib/rollup-plugin-condition-exports.cjs.js",
   "module": "lib/rollup-plugin-condition-exports.esm.js",
   "typings": "lib/index.d.ts",
@@ -26,7 +29,7 @@
     "pretest": "pnpm run build",
     "release": "pnpm run build && np --no-cleanup --yolo --no-publish --any-branch",
     "ci:version": "pnpx changeset version",
-    "ci:publish": "pnpx changeset publish",
+    "ci:publish": "pnpm run build && pnpx changeset publish",
     "ci:snapshot": "pnpx changeset version --snapshot beta",
     "ci:prerelease": "pnpm run build && pnpx changeset publish --tag beta",
     "lint:fix": "eslint . --fix",
