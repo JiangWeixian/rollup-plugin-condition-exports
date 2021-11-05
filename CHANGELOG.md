@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 1.1.0
+
+### Minor Changes
+
+- ad834df: export single plugin
+
 ## 1.0.1
 
 ### Patch Changes
