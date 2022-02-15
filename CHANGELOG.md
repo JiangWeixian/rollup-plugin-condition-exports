@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 1.2.0
+
+### Minor Changes
+
+- 56131b9: setup typesversions
+
 ## 1.1.0
 
 ### Minor Changes
