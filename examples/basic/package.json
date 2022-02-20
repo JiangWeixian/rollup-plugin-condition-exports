@@ -20,7 +20,8 @@
     "build": "rimraf lib && rollup -c --silent",
     "build:array": "rimraf lib && rollup -c ./rollup.config.array.js --silent",
     "build:pattern": "rimraf lib && rollup -c ./rollup.config.pattern.js --silent",
-    "build:alias": "rimraf lib && rollup -c ./rollup.config.alias.js --silent"
+    "build:alias": "rimraf lib && rollup -c ./rollup.config.alias.js --silent",
+    "build:components": "rimraf lib && rollup -c ./rollup.config.components.js --silent"
   },
   "dependencies": {
     "functional-md": "^1.1.0",
