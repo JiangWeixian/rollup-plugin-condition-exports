@@ -19,7 +19,11 @@ export default defineConfig([
       multiInput({
         relative: 'components/'
       }),
-      typescript(), // so Rollup can convert TypeScript to JavaScript
+      typescript({
+        tsconfigOverride: {
+          exclude: ['src']
+        }
+      }), // so Rollup can convert TypeScript to JavaScript
       alias({
         resolve: ['.ts', '.js', '.tsx', '.jsx'],
         entries: [{ find: '@/', replacement: './src/' }],
