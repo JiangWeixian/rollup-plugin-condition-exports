@@ -17,11 +17,11 @@
     "url": "https://twitter.com/jiangweixian"
   },
   "scripts": {
-    "build": "rimraf cjs es && rollup -c --silent",
-    "build:array": "rimraf cjs es && rollup -c ./rollup.config.array.js --silent",
-    "build:pattern": "rimraf cjs es && rollup -c ./rollup.config.pattern.js --silent",
-    "build:alias": "rimraf cjs es && rollup -c ./rollup.config.alias.js --silent",
-    "build:components": "rimraf cjs es && rollup -c ./rollup.config.components.js --silent"
+    "build": "rimraf cjs es && DEBUG=rpce* rollup -c --silent",
+    "build:array": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.array.js --silent",
+    "build:pattern": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.pattern.js --silent",
+    "build:alias": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.alias.js --silent",
+    "build:components": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.components.js --silent"
   },
   "dependencies": {
     "functional-md": "^1.1.0",
@@ -43,9 +43,27 @@
     "tslib": "2.3.1",
     "typescript": "4.4.3"
   },
-  "main": "cjs/index.js",
-  "typings": "es/index.d.ts",
-  "module": "es/index.mjs",
-  "exports.\\./package": "./package.json",
-  "exports../package": "./package.json"
+  "exports": {
+    "./package.json": "./package.json",
+    "./button": {
+      "require": "./dist/button/index.cjs",
+      "import": "./dist/button/index.mjs",
+      "types": "./dist/button/index.d.ts"
+    },
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "button": [
+        "dist/button/index.d.ts"
+      ]
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts"
 }

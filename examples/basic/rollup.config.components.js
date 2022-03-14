@@ -29,7 +29,10 @@ export default defineConfig([
         entries: [{ find: '@/', replacement: './src/' }],
       }),
       commonjs(),
-      ce(),
+      ce({
+        names: ['button/index', 'index'],
+        dirs: 'dist'
+      }),
       size(),
     ],
     output: [

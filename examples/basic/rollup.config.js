@@ -15,7 +15,11 @@ export default defineConfig([
   {
     input: 'src/index.ts',
     plugins: [
-      typescript(), // so Rollup can convert TypeScript to JavaScript
+      typescript({
+        tsconfigOverride: {
+          exclude: ['components']
+        }
+      }), // so Rollup can convert TypeScript to JavaScript
       alias({
         resolve: ['.ts', '.js', '.tsx', '.jsx'],
         entries: [{ find: '@/', replacement: './src/' }],
