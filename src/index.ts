@@ -2,13 +2,25 @@ import type { Plugin } from 'rollup'
 import path from 'path'
 import fs from 'fs-extra'
 import debug from 'debug'
+import fg from 'fast-glob'
 import { exportsTemplate, ExportsTemplateParams } from '@lotips/core/exports-template'
 
 const NAME = 'rpce'
 
 const log = debug(NAME)
 
-type Options = Partial<ExportsTemplateParams>
+type Options = Partial<ExportsTemplateParams> & {
+  /**
+   * Glob input
+   * @example ['components/xx/index.tsx']
+   */
+  glob?: string[]
+  /**
+   * Replace base prefix of glob result
+   * @example components make `components/button/index` -> `button.index`
+   */
+  base?: string
+}
 
 export default function plugin(
   { types = true, exts, ...params }: Options = { types: true },
@@ -22,6 +34,9 @@ export default function plugin(
     cjs: 'cjs',
     esm: 'mjs',
   }
+  const globNames = fg
+    .sync(params.glob || [])
+    .map((name) => name.replace(params.base || '', '').replace(path.extname(name), ''))
   return {
     name: NAME,
 
@@ -44,7 +59,7 @@ export default function plugin(
     writeBundle() {
       let pkg = fs.readJSONSync(path.resolve(process.cwd(), 'package.json'))
       const exports = exportsTemplate({
-        names: params.names || names,
+        names: globNames || params.names || names,
         dirs: params.dirs || dirs,
         exts,
         types,

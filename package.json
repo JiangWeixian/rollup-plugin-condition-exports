@@ -44,6 +44,7 @@
     "@lotips/core": "^0.8.3",
     "@rollup/pluginutils": "^4.1.2",
     "debug": "^4.3.2",
+    "fast-glob": "^3.2.11",
     "fs-extra": "^10.0.0"
   },
   "devDependencies": {
