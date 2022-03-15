@@ -1,5 +1,5 @@
 {
-  "name": "@aiou/rollup-template",
+  "name": "examples-basic",
   "version": "1.8.0",
   "license": "MIT",
   "homepage": "https://github.com/spring-catponents/rollup-template#readme",
@@ -45,15 +45,15 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./button": {
-      "require": "./dist/button/index.cjs",
-      "import": "./dist/button/index.mjs",
-      "types": "./dist/button/index.d.ts"
-    },
     ".": {
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
+    },
+    "./button": {
+      "require": "./dist/button/index.cjs",
+      "import": "./dist/button/index.mjs",
+      "types": "./dist/button/index.d.ts"
     }
   },
   "typesVersions": {

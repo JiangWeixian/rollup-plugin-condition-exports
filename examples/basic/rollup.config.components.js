@@ -30,7 +30,8 @@ export default defineConfig([
       }),
       commonjs(),
       ce({
-        names: ['button/index', 'index'],
+        glob: ['components/**/index.ts'],
+        base: 'components/',
         dirs: 'dist'
       }),
       size(),
