@@ -6,7 +6,7 @@ importers:
     specifiers:
       '@aiou/eslint-config': ^0.3.2
       '@changesets/cli': ^2.17.0
-      '@lotips/core': ^0.8.3
+      '@lotips/core': ^0.9.0
       '@rollup/plugin-alias': ^3.1.4
       '@rollup/pluginutils': ^4.1.2
       '@types/debug': ^4.1.7
@@ -32,7 +32,7 @@ importers:
       tslib: 2.3.1
       typescript: 4.4.3
     dependencies:
-      '@lotips/core': link:../lotips/packages/core
+      '@lotips/core': 0.9.0
       '@rollup/pluginutils': 4.1.2
       debug: 4.3.2
       fast-glob: 3.2.11
@@ -969,6 +969,15 @@ packages:
       '@types/yargs': 16.0.4
       chalk: 4.1.2
     dev: true
+
+  /@lotips/core/0.9.0:
+    resolution: {integrity: sha512-2paLzHh9tdbd1bep9POM+zEOw6rX0duE95XcowCOwbZ1T/4UOE15LJ42fKOcXlj4b+TRD3c7cxa0ykgtng7bMQ==}
+    engines: {node: '>=14'}
+    dependencies:
+      is-mobile: 3.1.1
+    dev: false
+    bundledDependencies:
+      - lodash-es
 
   /@manypkg/find-root/1.1.0:
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -3373,6 +3382,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-extglob: 2.1.1
+
+  /is-mobile/3.1.1:
+    resolution: {integrity: sha512-RRoXXR2HNFxNkUnxtaBdGBXtFlUMFa06S0NUKf/LCF+MuGLu13gi9iBCkoEmc6+rpXuwi5Mso5V8Zf7mNynMBQ==}
+    dev: false
 
   /is-module/1.0.0:
     resolution: {integrity: sha1-Mlj7afeMFNW4FdZkM2tM/7ZEFZE=}
