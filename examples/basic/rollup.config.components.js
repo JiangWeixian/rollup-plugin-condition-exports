@@ -3,6 +3,7 @@ import typescript from 'rollup-plugin-typescript2'
 import alias from '@rollup/plugin-alias'
 import size from 'rollup-plugin-size'
 import ce from 'rollup-plugin-condition-exports'
+import multiInput from 'rollup-plugin-multi-input';
 import { defineConfig } from 'rollup'
 
 export default defineConfig([
@@ -13,11 +14,14 @@ export default defineConfig([
   // an array for the `output` option, where we can specify
   // `file` and `format` for each target)
   {
-    input: 'src/index.ts',
+    input: ['components/**/index.ts', 'components/index.ts'],
     plugins: [
+      multiInput({
+        relative: 'components/'
+      }),
       typescript({
         tsconfigOverride: {
-          exclude: ['components']
+          exclude: ['src']
         }
       }), // so Rollup can convert TypeScript to JavaScript
       alias({
@@ -25,7 +29,11 @@ export default defineConfig([
         entries: [{ find: '@/', replacement: './src/' }],
       }),
       commonjs(),
-      ce(),
+      ce({
+        glob: ['components/**/index.ts'],
+        base: 'components/',
+        dirs: 'dist'
+      }),
       size(),
     ],
     output: [

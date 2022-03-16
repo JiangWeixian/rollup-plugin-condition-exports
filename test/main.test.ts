@@ -1,3 +1,5 @@
-describe('roll-plugin-template', () => {
-  it.todo('run plugin')
+describe('ce', () => {
+  it('normalize', () => {
+    console.log('hello')
+  })
 })

@@ -1,111 +1,75 @@
 import type { Plugin } from 'rollup'
-import setValue from 'set-value'
 import path from 'path'
 import fs from 'fs-extra'
 import debug from 'debug'
+import fg from 'fast-glob'
+import { exportsTemplate, ExportsTemplateParams } from '@lotips/core/exports-template'
 
-type Output = Record<string, string | undefined> & {
-  exports?: Record<string, any>
-}
-
-const output: Output = {}
-
-const strip = (filename: string, replacement = '') => {
-  return filename.replace(/(\.es\.js)|(\.js)|(\.ts)|(\.d\.ts)|(\.mjs)/g, replacement)
-}
-
-const normalize = (name: string) => {
-  if (name === 'index') {
-    return {
-      import: `exports/.\/import`,
-      types: `exports/.\/types`,
-      require: `exports/.\/require`,
-    }
-  }
-  return {
-    import: `exports/.\\/${strip(name)}/import`,
-    types: `exports/.\\/${strip(name)}/types`,
-    require: `exports/.\\/${strip(name)}/require`,
-  }
-}
-
-const NAME = 'rollup-plugin-condition-exports'
+const NAME = 'rpce'
 
 const log = debug(NAME)
 
+type Options = Partial<ExportsTemplateParams> & {
+  /**
+   * Glob input
+   * @example ['components/xx/index.tsx']
+   */
+  glob?: string[]
+  /**
+   * Replace base prefix of glob result
+   * @example components make `components/button/index` -> `button.index`
+   */
+  base?: string
+}
+
 export default function plugin(
-  { declaration = true }: { declaration: boolean } = { declaration: true },
+  { types = true, exts, ...params }: Options = { types: true },
 ): Plugin {
-  let shouldRun = false
+  const names: string[] = []
+  const formats: ExportsTemplateParams['formats'] = []
+  const dirs: {
+    cjs: string
+    esm: string
+  } = {
+    cjs: 'cjs',
+    esm: 'mjs',
+  }
+  const globNames = fg
+    .sync(params.glob || [])
+    .map((name) => name.replace(params.base || '', '').replace(path.extname(name), ''))
   return {
     name: NAME,
-    generateBundle(options, bundle, _isWrite) {
-      const dir = options.dir === '.' ? '' : options.dir || ''
-      shouldRun = !!options.dir
-      if (!shouldRun) {
-        log('Skip because of not in dir mode')
+
+    generateBundle(options, bundle) {
+      const dir = options.dir || 'dist'
+      if (options.format !== 'cjs' && options.format !== 'es') {
+        return
       }
-      Object.keys(bundle).forEach((filename) => {
-        if (!bundle[filename].name) {
-          return
-        }
-        const exports = normalize(bundle[filename].name!)
-        if (options.format === 'cjs' && options.dir) {
-          // setup `exports.[module].require`
-          setValue(output, exports.require, `./${path.join(dir, filename)}`, {
-            separator: '/',
+      formats.push(options.format)
+      if (options.format === 'cjs') {
+        Object.keys(bundle)
+          .filter((filename) => bundle[filename].name)
+          .forEach((filename) => {
+            names.push(bundle[filename].name!)
           })
-          if (bundle[filename].name === 'index') {
-            output.main = path.join(dir, filename)
-          }
-        }
-        if (['es', 'esm'].includes(options.format) && options.dir) {
-          // setup types
-          if (declaration) {
-            const typesFilename = strip(filename, '.d.ts')
-            setValue(output, exports.types, `./${path.join(dir, typesFilename)}`, {
-              separator: '/',
-            })
-            if (bundle[filename].name !== 'index') {
-              setValue(
-                output,
-                `typesVersions/*/${strip(filename)}`,
-                [`${path.join(dir, typesFilename)}`],
-                {
-                  separator: '/',
-                },
-              )
-            }
-          }
-          if (bundle[filename].name === 'index') {
-            output.module = path.join(dir, filename)
-          }
-          // setup `exports.[module].import`
-          setValue(output, exports.import, `./${path.join(dir, filename)}`, {
-            separator: '/',
-          })
-        }
-      })
-      // TODO: is needed?
-      if (declaration) {
-        output.typings = path.join(dir, 'index.d.ts')
       }
-      setValue(output, `exports/.\\/package.json`, `./package.json`, {
-        separator: '/',
-      })
-      log('%O', output)
+      dirs[options.format] = dir
     },
 
-    /* Type: (bundle: { [fileName: string]: AssetInfo | ChunkInfo }) => void */
-    /* Kind: async, parallel                                                  */
     writeBundle() {
-      if (shouldRun) {
-        const pkg = fs.readJSONSync(path.resolve(process.cwd(), 'package.json'))
-        const next = Object.assign(pkg, output)
-        fs.writeJSONSync(path.resolve(process.cwd(), 'package.json'), next, {
-          spaces: 2,
-        })
-      }
+      let pkg = fs.readJSONSync(path.resolve(process.cwd(), 'package.json'))
+      const exports = exportsTemplate({
+        names: globNames || params.names || names,
+        dirs: params.dirs || dirs,
+        exts,
+        types,
+        formats: params.formats || formats,
+      })
+      log('exports %s', JSON.stringify(exports))
+      pkg = Object.assign(pkg, exports)
+      fs.writeJSONSync(path.resolve(process.cwd(), 'package.json'), pkg, {
+        spaces: 2,
+      })
     },
   }
 }

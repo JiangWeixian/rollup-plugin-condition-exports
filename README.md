@@ -37,20 +37,41 @@ export default defineConfig([
 
 see [examples](https://github.com/JiangWeixian/rollup-plugin-condition-exports/examples/basic) from more details
 
-`options`
+## `options`
 
-- `declaration` - disable types setup
+`package.json` `main/module/typings/exports/typesVersions` fields controlled by follows options.
 
-## know issues
+- `exports` formation will be `[dir]/[name].[ext]`
+- `typesVersions` formation will be `[dir|types.dir]/[name].d.ts`
+- `main/module/types` formation will be `[dir]/index.[ext]`, only working if index name exit
 
-object input is not supported
+`types: boolean | { dirs: string }`
 
-```js
-input: {
-  a: 'src/md.ts',
-  index: 'src/index.ts',
-}
-```
+enable setup `typesVersions` field.
+
+`names: string[]`
+
+default infer from rollup bundle info
+
+`formats: ['cjs', 'esm', 'es']`
+
+default infer from rollup options, enable/disable exports.require or exports.import
+
+`dirs: string | { cjs: string, esm: string }`
+
+default infer from rollup bundle info
+
+`exts: string | { cjs: string, esm: string }`
+
+bundle file extname
+
+`glob: string[]`
+
+useful for like `react-components` project, get all exports module name by `fast-glob's patterns`
+
+`base: string`
+
+replace prefix string of glob result.
 
 ## development
 
