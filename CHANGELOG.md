@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 1.3.0
+
+### Minor Changes
+
+- 21c7c33: support components project with glob options
+
 ## 1.2.0
 
 ### Minor Changes
