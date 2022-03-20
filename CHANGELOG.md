@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 1.3.1
+
+### Patch Changes
+
+- 5bf03f7: fix names not working
+
 ## 1.3.0
 
 ### Minor Changes
