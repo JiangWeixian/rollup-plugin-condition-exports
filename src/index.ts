@@ -27,16 +27,15 @@ export default function plugin(
 ): Plugin {
   const names: string[] = []
   const formats: ExportsTemplateParams['formats'] = []
-  const dirs: {
-    cjs: string
-    esm: string
-  } = {
+  const dirs: ExportsTemplateParams['dirs'] = {
     cjs: 'cjs',
-    esm: 'mjs',
+    es: 'mjs',
   }
-  const globNames = fg
-    .sync(params.glob || [])
-    .map((name) => name.replace(params.base || '', '').replace(path.extname(name), ''))
+  const globNames = !params.glob
+    ? undefined
+    : fg
+        .sync(params.glob)
+        .map((name) => name.replace(params.base || '', '').replace(path.extname(name), ''))
   return {
     name: NAME,
 

@@ -31,14 +31,13 @@ export default defineConfig([
       commonjs(),
       ce({
         glob: ['components/**/index.ts'],
-        base: 'components/',
-        dirs: 'dist'
+        base: 'components/'
       }),
       size(),
     ],
     output: [
-      { dir: 'cjs', format: 'cjs' },
-      { dir: 'es', entryFileNames: '[name].mjs', format: 'es' },
+      { dir: 'dist', format: 'cjs' },
+      { dir: 'dist', entryFileNames: '[name].mjs', format: 'es' },
     ],
   },
 ])
