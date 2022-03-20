@@ -53,15 +53,15 @@ enable setup `typesVersions` field.
 
 default infer from rollup bundle info
 
-`formats: ['cjs', 'esm', 'es']`
+`formats: ['cjs', 'es']`
 
 default infer from rollup options, enable/disable exports.require or exports.import
 
-`dirs: string | { cjs: string, esm: string }`
+`dirs: string | { cjs: string, es: string }`
 
 default infer from rollup bundle info
 
-`exts: string | { cjs: string, esm: string }`
+`exts: string | { cjs: string, es: string }`
 
 bundle file extname
 
