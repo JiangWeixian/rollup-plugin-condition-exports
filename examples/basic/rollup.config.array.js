@@ -26,7 +26,7 @@ export default defineConfig([
     ],
     output: [
       { dir: 'cjs', format: 'cjs' },
-      { dir: 'es', entryFileNames: '[name].mjs', format: 'es' },
+      { dir: 'es', entryFileNames: '[name].mjs', format: 'esm' },
     ],
   },
 ])

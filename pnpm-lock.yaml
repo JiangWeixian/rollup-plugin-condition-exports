@@ -6,7 +6,7 @@ importers:
     specifiers:
       '@aiou/eslint-config': ^0.3.2
       '@changesets/cli': ^2.17.0
-      '@lotips/core': ^0.9.0
+      '@lotips/core': ^0.9.1
       '@rollup/plugin-alias': ^3.1.4
       '@rollup/pluginutils': ^4.1.2
       '@types/debug': ^4.1.7
@@ -32,7 +32,7 @@ importers:
       tslib: 2.3.1
       typescript: 4.4.3
     dependencies:
-      '@lotips/core': 0.9.0
+      '@lotips/core': 0.9.1
       '@rollup/pluginutils': 4.1.2
       debug: 4.3.2
       fast-glob: 3.2.11
@@ -970,8 +970,8 @@ packages:
       chalk: 4.1.2
     dev: true
 
-  /@lotips/core/0.9.0:
-    resolution: {integrity: sha512-2paLzHh9tdbd1bep9POM+zEOw6rX0duE95XcowCOwbZ1T/4UOE15LJ42fKOcXlj4b+TRD3c7cxa0ykgtng7bMQ==}
+  /@lotips/core/0.9.1:
+    resolution: {integrity: sha512-2Or8L1CGf3v+Mr8G8CxDwuX1WJgg647QBCiDU36Wdy6kTYBuWbhulJZFaX9wBlR8eDo9Z11P6ZS26FcUBC+0uw==}
     engines: {node: '>=14'}
     dependencies:
       is-mobile: 3.1.1

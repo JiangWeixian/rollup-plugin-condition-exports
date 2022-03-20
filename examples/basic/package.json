@@ -46,24 +46,24 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./cjs/index.cjs",
+      "types": "./cjs/index.d.ts",
+      "import": "./es/index.mjs"
     },
-    "./button": {
-      "require": "./dist/button/index.cjs",
-      "import": "./dist/button/index.mjs",
-      "types": "./dist/button/index.d.ts"
+    "./md": {
+      "require": "./cjs/md.cjs",
+      "types": "./cjs/md.d.ts",
+      "import": "./es/md.mjs"
     }
   },
   "typesVersions": {
     "*": {
-      "button": [
-        "dist/button/index.d.ts"
+      "md": [
+        "cjs/md.d.ts"
       ]
     }
   },
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts"
+  "main": "cjs/index.cjs",
+  "module": "es/index.mjs",
+  "types": "cjs/index.d.ts"
 }
