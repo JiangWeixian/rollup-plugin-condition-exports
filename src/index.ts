@@ -63,6 +63,7 @@ export default function plugin(
         exts,
         types,
         formats: params.formats || formats,
+        disabledFields: params.disabledFields,
       })
       log('exports %s', JSON.stringify(exports))
       pkg = Object.assign(pkg, exports)

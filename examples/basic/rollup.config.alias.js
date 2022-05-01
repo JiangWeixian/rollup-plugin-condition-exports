@@ -24,7 +24,7 @@ export default defineConfig([
         entries: [{ find: '@/', replacement: './src/' }],
       }),
       commonjs(),
-      ce(),
+      ce({ disabledFields: ['types'] }),
       size(),
     ],
     output: [

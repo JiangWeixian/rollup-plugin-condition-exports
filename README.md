@@ -21,7 +21,7 @@ import { defineConfig } from 'rollup'
 
 export default defineConfig([
   {
-    input: 'src/index.ts',
+    input: ['src/index.ts', 'src/do-something'],
     plugins: [
       typescript(), // so Rollup can convert TypeScript to JavaScript
       commonjs(),
@@ -33,6 +33,36 @@ export default defineConfig([
     ],
   },
 ])
+```
+
+👇 will setup fields in package
+
+```json
+{
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+    },
+    "./do-something": {
+      "import": "./dist/do-something/index.mjs",
+      "require": "./dist/do-something/index.cjs",
+      "types": "./dist/do-something/index.d.ts",
+    },
+    "./package.json": "./package.json",
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "do-something": [
+        "dist/do-something/index.d.ts",
+      ],
+    },
+  },
+}
 ```
 
 see [examples](https://github.com/JiangWeixian/rollup-plugin-condition-exports/examples/basic) from more details
@@ -72,6 +102,10 @@ useful for like `react-components` project, get all exports module name by `fast
 `base: string`
 
 replace prefix string of glob result.
+
+`disabledFields: string[]`
+
+force disable some fields, regardless of other settings
 
 ## development
 
