@@ -45,25 +45,24 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./a": {
+      "require": "./cjs/a.cjs",
+      "types": "./cjs/a.d.ts",
+      "import": "./es/a.mjs"
+    },
     ".": {
       "require": "./cjs/index.cjs",
       "types": "./cjs/index.d.ts",
       "import": "./es/index.mjs"
-    },
-    "./md": {
-      "require": "./cjs/md.cjs",
-      "types": "./cjs/md.d.ts",
-      "import": "./es/md.mjs"
     }
   },
   "typesVersions": {
     "*": {
-      "md": [
-        "cjs/md.d.ts"
+      "a": [
+        "cjs/a.d.ts"
       ]
     }
   },
   "main": "cjs/index.cjs",
-  "module": "es/index.mjs",
-  "types": "cjs/index.d.ts"
+  "module": "es/index.mjs"
 }
