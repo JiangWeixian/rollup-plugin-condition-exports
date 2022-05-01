@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 1.4.0
+
+### Minor Changes
+
+- 339da84: support disable setup some filelds via disabledFields
+
 ## 1.3.1
 
 ### Patch Changes
