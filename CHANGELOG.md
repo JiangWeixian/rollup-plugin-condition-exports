@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 1.4.1
+
+### Patch Changes
+
+- 62d3d33: upgrade @lotips/core to fix types config not working
+
 ## 1.4.0
 
 ### Minor Changes
