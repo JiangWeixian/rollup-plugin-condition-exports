@@ -26,7 +26,7 @@ export const syncIndexResolver: ImportModeResolver = (filepath, options) => {
 
 export function resolveOptions(userOptions: UserOptions, viteRoot?: string): ResolvedOptions {
   const {
-    dirs = userOptions.pagesDir || ['src/pages'],
+    dirs = ['src/exports'],
     routeBlockLang = 'json5',
     exclude = ['node_modules', '.git', '**/__*__/**'],
     caseSensitive = false,
@@ -46,12 +46,8 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
   const extensionsRE = new RegExp(`\\.(${extensions.join('|')})$`)
 
   const resolvedDirs = resolvePageDirs(dirs, root, exclude)
-
-  const routeStyle = userOptions.nuxtStyle ? 'nuxt' : userOptions.routeStyle || 'next'
-
   const resolvedOptions: ResolvedOptions = {
     dirs: resolvedDirs,
-    routeStyle,
     routeBlockLang,
     root,
     extensions,

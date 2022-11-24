@@ -1,5 +1,5 @@
 import type { ReactRoute } from './resolver'
-import type { PageContext } from './context'
+import type { PackageContext } from './context'
 import type { Awaitable } from '@antfu/utils'
 
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
@@ -27,8 +27,8 @@ export interface PageOptions {
 
 export interface PageResolver {
   resolveExtensions: () => string[]
-  resolveRoutes: (ctx: PageContext) => Awaitable<string>
-  getComputedRoutes: (ctx: PageContext) => Awaitable<ReactRoute[]>
+  resolveRoutes: (ctx: PackageContext) => Awaitable<string>
+  getComputedRoutes: (ctx: PackageContext) => Awaitable<ReactRoute[]>
 }
 
 /**
@@ -61,17 +61,6 @@ interface Options {
    */
   syncIndex: boolean
   /**
-   * Use Nuxt.js style route naming
-   * @default false
-   * @deprecated use `routeStyle` instead
-   */
-  nuxtStyle: boolean
-  /**
-   * Routing style
-   * @default false
-   */
-  routeStyle: 'next' | 'nuxt' | 'remix'
-  /**
    * Separator for generated route names.
    * @default -
    */
@@ -98,17 +87,6 @@ interface Options {
    * Custom generated client code
    */
   onClientGenerated?: (clientCode: string) => Awaitable<string | void>
-
-  /**
-   * Paths to the directory to search for page components.
-   * @deprecated use `dirs` instead
-   */
-  pagesDir: string | (string | PageOptions)[]
-  /**
-   * Replace '[]' to '_' in bundle filename
-   * @deprecated issue #122
-   */
-  replaceSquareBrackets: never
 }
 
 export type UserOptions = Partial<Options>

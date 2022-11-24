@@ -12,7 +12,7 @@ export interface PageRoute {
   route: string
 }
 
-export class PageContext {
+export class PackageContext {
   private _pageRouteMap = new Map<string, PageRoute>()
 
   rawOptions: UserOptions
@@ -20,9 +20,9 @@ export class PageContext {
   options: ResolvedOptions
   resolver = resolver()
 
-  constructor(userOptions: UserOptions, viteRoot: string = process.cwd()) {
+  constructor(userOptions: UserOptions, root: string = process.cwd()) {
     this.rawOptions = userOptions
-    this.root = slash(viteRoot)
+    this.root = slash(root)
     debug.env('root', this.root)
     this.options = resolveOptions(userOptions, this.root)
     debug.options(this.options)
@@ -55,6 +55,7 @@ export class PageContext {
     const pageDirFiles = this.options.dirs.map((page) => {
       const pagesDirPath = slash(resolve(this.options.root, page.dir))
       const files = getPageFiles(pagesDirPath, this.options)
+      console.log(files)
       debug.search(page.dir, files)
       return {
         ...page,
