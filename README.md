@@ -112,6 +112,10 @@ force disable some fields, regardless of other settings
 - **Setup** - `pnpm i`
 - **Build** - `pnpm build`
 
+## credits
+
+- <https://github.com/hannoeru/vite-plugin-pages>
+
 # 
 <div align='right'>
 
