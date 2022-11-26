@@ -28,7 +28,6 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
   const {
     dirs = ['src/exports'],
     exclude = ['node_modules', '.git', '**/__*__/**'],
-    routeNameSeparator = '-',
     extendRoute,
     onRoutesGenerated,
     onClientGenerated,
@@ -36,11 +35,10 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
     esmExtension = 'mjs',
     outDir = 'dist',
     declarationDir = 'dist',
+    conditions = ['node', 'browser', 'default'],
   } = userOptions
 
   const root = viteRoot || slash(process.cwd())
-
-  const importMode = userOptions.importMode || 'async'
 
   const extensions = userOptions.extensions || defaultExtensions
 
@@ -53,15 +51,14 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
     dirs: resolvedDirs,
     outDir: resolvedOutDir,
     declarationDir: resolvedDeclarationDir,
+    conditions,
     root,
     extensions,
-    importMode,
     exclude,
     extensionsRE,
     extendRoute,
     onRoutesGenerated,
     onClientGenerated,
-    routeNameSeparator,
     cjsExtension,
     esmExtension,
   }

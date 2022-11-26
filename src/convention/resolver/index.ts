@@ -98,15 +98,17 @@ const _resolveExports = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {
       if (path === '.') {
         pkg.main = `${route.element}.${ctx.options.cjsExtension}`
         pkg.module = `${route.element}.${ctx.options.esmExtension}`
-        pkg.types = `./${route.element}.d.ts`
+        pkg.types = `${route.element}.d.ts`
       } else {
-        pkg.typesVersions[`${path.slice(2)}`] = [`${route.element}.d.ts`]
+        pkg.typesVersions[`${path.slice(2)}`] = [
+          `${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`,
+        ]
       }
       console.log(route.path, route.element)
       pkg.exports[`${path}`] = {
         require: `./${route.element}.${ctx.options.cjsExtension}`,
         import: `./${route.element}.${ctx.options.esmExtension}`,
-        types: `./${route.element}.d.ts`,
+        types: `./${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`,
       }
     }
     if (route.children) {

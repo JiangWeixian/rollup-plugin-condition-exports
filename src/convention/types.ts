@@ -69,15 +69,10 @@ interface Options {
    */
   exclude: string[]
   /**
-   * Import routes directly or as async components
-   * @default 'root index file => "sync", others => "async"'
+   * List of exports condition names
+   * @default ['node', 'browser', 'default']
    */
-  importMode: ImportMode | ImportModeResolver
-  /**
-   * Separator for generated route names.
-   * @default -
-   */
-  routeNameSeparator: string
+  conditions: string[]
   /**
    * Extend route records
    */
