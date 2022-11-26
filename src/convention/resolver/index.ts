@@ -10,6 +10,7 @@ export interface ReactRouteBase {
   element?: string
   index?: boolean
   path?: string
+  condition?: string
   rawRoute: string
 }
 
@@ -50,7 +51,10 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
         rawRoute: pathNodes.slice(0, i + 1).join('/'),
       }
 
-      if (i === pathNodes.length - 1) route.element = element
+      if (i === pathNodes.length - 1) {
+        route.element = element
+        route.condition = ctx.options.conditions.includes(node) ? node : undefined
+      }
 
       const isIndexRoute = node.endsWith('index')
 
@@ -65,7 +69,13 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
         return pathNodes.slice(0, i).join('/') === parent.rawRoute
       })
 
+      // only enable condition exports on dirs
       if (parent) {
+        route.condition = parent ? undefined : route.condition
+      }
+
+      // only nested route on condition exports dir
+      if (parent && route.condition) {
         // Make sure children exits in parent
         parent.children = parent.children || []
         // Append to parent's children
@@ -77,7 +87,8 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
       })
       if (!exits) {
         parentRoutes.push(route)
-        route.path = join(parent?.path ?? '', route.path ?? '')
+        // absolute route path
+        route.path = !route.condition ? join(parent?.path ?? '', route.path ?? '') : parent?.path
       }
     }
   })
@@ -91,7 +102,7 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
 }
 
 // FIXME: src/exports/[..all] is not allowed
-const _resolveExports = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) => {
+const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) => {
   for (const route of routes) {
     const path = route.path && route.path !== '.' ? `./${route.path}` : '.'
     if (route.leaf) {
@@ -104,29 +115,36 @@ const _resolveExports = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {
           `${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`,
         ]
       }
-      console.log(route.path, route.element)
-      pkg.exports[`${path}`] = {
-        require: `./${route.element}.${ctx.options.cjsExtension}`,
-        import: `./${route.element}.${ctx.options.esmExtension}`,
-        types: `./${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`,
+      pkg.exports[`${path}`] = pkg.exports[`${path}`] ?? {}
+      let subExports = pkg.exports[`${path}`]
+      if (route.condition) {
+        pkg.exports[`${path}`][route.condition] = pkg.exports[`${path}`][route.condition] ?? {}
+        subExports = pkg.exports[`${path}`][route.condition]
       }
+      subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
+      subExports.import = `./${route.element}.${ctx.options.esmExtension}`
+      subExports.types = `./${route.element?.replace(
+        ctx.options.outDir,
+        ctx.options.declarationDir,
+      )}.d.ts`
     }
     if (route.children) {
-      _resolveExports(route.children, ctx, pkg)
+      _resolvePkg(route.children, ctx, pkg)
     }
   }
 }
 
-export async function resolveExports(ctx: PackageContext) {
+export async function resolvePkg(ctx: PackageContext) {
   const finalRoutes = await computeExports(ctx)
+  console.log(JSON.stringify(finalRoutes, null, 2))
   const pkg: any = {
     exports: {},
     typesVersions: {},
   }
   exports['./package.json'] = './package.json'
-  _resolveExports(finalRoutes, ctx, pkg)
+  _resolvePkg(finalRoutes, ctx, pkg)
   pkg.typesVersions = { '*': pkg.typesVersions }
-  console.log(pkg)
+  console.log(JSON.stringify(pkg, null, 2))
   return exports
 }
 
@@ -137,7 +155,7 @@ export function resolver(): PageResolver {
     },
     async resolveExports(ctx) {
       // TODO: typo
-      return resolveExports(ctx) as any
+      return resolvePkg(ctx) as any
     },
   }
 }
