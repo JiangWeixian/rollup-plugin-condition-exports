@@ -7,8 +7,8 @@ const FIXTURES = path.resolve(__dirname, '../examples/basic')
 
 describe('resolver', () => {
   it('resolve exports', async () => {
-    const ctx = new PackageContext({}, FIXTURES)
+    const ctx = new PackageContext({ dirs: 'src/exports' }, FIXTURES)
     await ctx.searchGlob()
-    console.log(await ctx.resolveRoutes())
+    await ctx.resolveRoutes()
   })
 })

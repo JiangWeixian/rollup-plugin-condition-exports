@@ -27,8 +27,7 @@ export interface PageOptions {
 
 export interface PageResolver {
   resolveExtensions: () => string[]
-  resolveRoutes: (ctx: PackageContext) => Awaitable<string>
-  getComputedRoutes: (ctx: PackageContext) => Awaitable<ReactRoute[]>
+  resolveExports: (ctx: PackageContext) => Awaitable<ReactRoute[]>
 }
 
 /**
@@ -41,10 +40,25 @@ interface Options {
    */
   dirs: string | (string | PageOptions)[]
   /**
-   * Valid file extensions for page components.
-   * @default ['vue', 'js']
+   * Paths to the directory output bundle files
+   * @default 'src/pages'
+   */
+  outDir: string
+  /**
+   * Valid file extensions
+   * @default ['tsx', 'ts', 'jsx', 'jsx']
    */
   extensions: string[]
+  /**
+   * CJS format extension
+   * @default 'cjs'
+   */
+  cjsExtension: string
+  /**
+   * ESM format extension
+   * @default 'mjs'
+   */
+  esmExtension: string
   /**
    * List of path globs to exclude when resolving pages.
    */
@@ -55,26 +69,10 @@ interface Options {
    */
   importMode: ImportMode | ImportModeResolver
   /**
-   * Sync load top level index file
-   * @default true
-   * @deprecated use `importMode` instead
-   */
-  syncIndex: boolean
-  /**
    * Separator for generated route names.
    * @default -
    */
   routeNameSeparator: string
-  /**
-   * Case for route paths
-   * @default false
-   */
-  caseSensitive: boolean
-  /**
-   * Set the default route block parser, or use `<route lang=xxx>` in SFC route block
-   * @default 'json5'
-   */
-  routeBlockLang: 'json5' | 'json' | 'yaml' | 'yml'
   /**
    * Extend route records
    */

@@ -32,11 +32,12 @@ export class PackageContext {
     debug.pages('add', path)
     for (const p of toArray(path)) {
       const pageDirPath = slash(resolve(this.root, pageDir.dir))
+      const path = p.replace(`${pageDirPath}`, this.options.outDir).replace(extname(p), '')
       const route = slash(
         join(pageDir.baseRoute, p.replace(`${pageDirPath}/`, '').replace(extname(p), '')),
       )
       this._pageRouteMap.set(p, {
-        path: p,
+        path,
         route,
       })
     }
@@ -48,7 +49,7 @@ export class PackageContext {
   }
 
   async resolveRoutes() {
-    return this.resolver.resolveRoutes(this)
+    return this.resolver.resolveExports(this)
   }
 
   async searchGlob() {

@@ -1,19 +1,19 @@
-import { buildReactRoutePath, countSlash, normalizeCase } from '../utils'
-
+import { buildReactRoutePath, countSlash } from '../utils'
 import type { Optional, PageResolver, ResolvedOptions } from '../types'
-import type { PageContext } from '../context'
+import type { PackageContext } from '../context'
+
+import { join } from 'path'
 
 export interface ReactRouteBase {
-  caseSensitive?: boolean
   children?: ReactRouteBase[]
+  leaf: boolean
   element?: string
   index?: boolean
   path?: string
   rawRoute: string
 }
 
-export interface ReactRoute
-  extends Omit<Optional<ReactRouteBase, 'rawRoute' | 'path'>, 'children'> {
+export interface ReactRoute extends Omit<Optional<ReactRouteBase, 'path'>, 'children'> {
   children?: ReactRoute[]
 }
 
@@ -23,43 +23,39 @@ function prepareRoutes(routes: ReactRoute[], options: ResolvedOptions, parent?: 
 
     if (route.children) route.children = prepareRoutes(route.children, options, route)
 
-    delete route.rawRoute
-
     Object.assign(route, options.extendRoute?.(route, parent) || {})
   }
 
   return routes
 }
 
-async function computeReactRoutes(ctx: PageContext): Promise<ReactRoute[]> {
-  const { caseSensitive } = ctx.options
-
-  const pageRoutes = [...ctx.pageRouteMap.values()]
-    // sort routes for HMR
-    .sort((a, b) => countSlash(a.route) - countSlash(b.route))
+async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
+  const pageRoutes = [...ctx.pageRouteMap.values()].sort(
+    (a, b) => countSlash(a.route) - countSlash(b.route),
+  )
 
   const routes: ReactRouteBase[] = []
 
   pageRoutes.forEach((page) => {
     const pathNodes = page.route.split('/')
-    const element = page.path.replace(ctx.root, '')
+    const element = page.path
     let parentRoutes = routes
 
     for (let i = 0; i < pathNodes.length; i++) {
       const node = pathNodes[i]
 
       const route: ReactRouteBase = {
-        caseSensitive,
         path: '',
+        leaf: i === pathNodes.length - 1,
         rawRoute: pathNodes.slice(0, i + 1).join('/'),
       }
 
       if (i === pathNodes.length - 1) route.element = element
 
-      const isIndexRoute = normalizeCase(node, caseSensitive).endsWith('index')
+      const isIndexRoute = node.endsWith('index')
 
       if (!route.path && isIndexRoute) {
-        route.path = '/'
+        route.path = ''
       } else if (!isIndexRoute) {
         route.path = buildReactRoutePath(node)
       }
@@ -79,7 +75,10 @@ async function computeReactRoutes(ctx: PageContext): Promise<ReactRoute[]> {
       const exits = parentRoutes.some((parent) => {
         return pathNodes.slice(0, i + 1).join('/') === parent.rawRoute
       })
-      if (!exits) parentRoutes.push(route)
+      if (!exits) {
+        parentRoutes.push(route)
+        route.path = join(parent?.path ?? '', route.path ?? '')
+      }
     }
   })
 
@@ -91,9 +90,40 @@ async function computeReactRoutes(ctx: PageContext): Promise<ReactRoute[]> {
   return finalRoutes
 }
 
-export async function resolveReactRoutes(ctx: PageContext) {
-  const finalRoutes = await computeReactRoutes(ctx)
-  return finalRoutes
+// FIXME: src/exports/[..all] is not allowed
+const _resolveExports = (routes: ReactRoute[], ctx: PackageContext, exports: any = {}) => {
+  for (const route of routes) {
+    if (route.leaf) {
+      console.log(route.path, route.element)
+      const path = route.path && route.path !== '.' ? `./${route.path}` : '.'
+      exports[`${path}`] = {
+        require: `./${route.element}.${ctx.options.cjsExtension}`,
+        import: `./${route.element}.${ctx.options.esmExtension}`,
+      }
+    }
+    if (route.children) {
+      _resolveExports(route.children, ctx, exports)
+    }
+  }
+}
+
+const resolveMainFields = (routes: ReactRoute[], ctx: PackageContext, mains: any = {}) => {
+  const route = routes.find((route) => route.path === '.')
+  if (route) {
+    mains.main = `${route.element}.${ctx.options.cjsExtension}`
+    mains.module = `${route.element}.${ctx.options.esmExtension}`
+  }
+}
+
+export async function resolveExports(ctx: PackageContext) {
+  const finalRoutes = await computeExports(ctx)
+  const exports: Record<string, string | Record<string, string>> = {}
+  const mains: Record<string, string | Record<string, string>> = {}
+  exports['./package.json'] = './package.json'
+  _resolveExports(finalRoutes, ctx, exports)
+  resolveMainFields(finalRoutes, ctx, mains)
+  console.log(exports, mains)
+  return exports
 }
 
 export function resolver(): PageResolver {
@@ -101,12 +131,9 @@ export function resolver(): PageResolver {
     resolveExtensions() {
       return ['tsx', 'jsx', 'ts', 'js']
     },
-    // TODO: maybe del this property
-    async resolveRoutes(ctx) {
-      return resolveReactRoutes(ctx) as any
-    },
-    async getComputedRoutes(ctx) {
-      return computeReactRoutes(ctx)
+    async resolveExports(ctx) {
+      // TODO: typo
+      return resolveExports(ctx) as any
     },
   }
 }

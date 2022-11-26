@@ -27,38 +27,40 @@ export const syncIndexResolver: ImportModeResolver = (filepath, options) => {
 export function resolveOptions(userOptions: UserOptions, viteRoot?: string): ResolvedOptions {
   const {
     dirs = ['src/exports'],
-    routeBlockLang = 'json5',
     exclude = ['node_modules', '.git', '**/__*__/**'],
-    caseSensitive = false,
-    syncIndex = true,
     routeNameSeparator = '-',
     extendRoute,
     onRoutesGenerated,
     onClientGenerated,
+    cjsExtension = 'cjs',
+    esmExtension = 'mjs',
+    outDir = 'dist',
   } = userOptions
 
   const root = viteRoot || slash(process.cwd())
 
-  const importMode = userOptions.importMode || (syncIndex ? syncIndexResolver : 'async')
+  const importMode = userOptions.importMode || 'async'
 
   const extensions = userOptions.extensions || defaultExtensions
 
   const extensionsRE = new RegExp(`\\.(${extensions.join('|')})$`)
 
   const resolvedDirs = resolvePageDirs(dirs, root, exclude)
+  const resolvedOutDir = slash(resolve(root, outDir)).replace(`${root}/`, '')
   const resolvedOptions: ResolvedOptions = {
     dirs: resolvedDirs,
-    routeBlockLang,
+    outDir: resolvedOutDir,
     root,
     extensions,
     importMode,
     exclude,
-    caseSensitive,
     extensionsRE,
     extendRoute,
     onRoutesGenerated,
     onClientGenerated,
     routeNameSeparator,
+    cjsExtension,
+    esmExtension,
   }
 
   return resolvedOptions

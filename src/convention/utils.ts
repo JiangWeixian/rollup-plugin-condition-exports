@@ -47,11 +47,6 @@ export function resolveImportMode(filepath: string, options: ResolvedOptions) {
   return mode
 }
 
-export function normalizeCase(str: string, caseSensitive: boolean) {
-  if (!caseSensitive) return str.toLocaleLowerCase()
-  return str
-}
-
 export function normalizeName(name: string, isDynamic: boolean) {
   if (!isDynamic) return name
 
