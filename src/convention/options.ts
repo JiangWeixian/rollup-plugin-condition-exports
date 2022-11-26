@@ -35,6 +35,7 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
     cjsExtension = 'cjs',
     esmExtension = 'mjs',
     outDir = 'dist',
+    declarationDir = 'dist',
   } = userOptions
 
   const root = viteRoot || slash(process.cwd())
@@ -47,9 +48,11 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
 
   const resolvedDirs = resolvePageDirs(dirs, root, exclude)
   const resolvedOutDir = slash(resolve(root, outDir)).replace(`${root}/`, '')
+  const resolvedDeclarationDir = slash(resolve(root, declarationDir)).replace(`${root}/`, '')
   const resolvedOptions: ResolvedOptions = {
     dirs: resolvedDirs,
     outDir: resolvedOutDir,
+    declarationDir: resolvedDeclarationDir,
     root,
     extensions,
     importMode,

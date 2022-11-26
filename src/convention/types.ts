@@ -36,14 +36,19 @@ export interface PageResolver {
 interface Options {
   /**
    * Paths to the directory to search for page components.
-   * @default 'src/pages'
+   * @default 'src/exports'
    */
   dirs: string | (string | PageOptions)[]
   /**
    * Paths to the directory output bundle files
-   * @default 'src/pages'
+   * @default 'dist'
    */
   outDir: string
+  /**
+   * Paths to the directory output dts files
+   * @default 'dist'
+   */
+  declarationDir: string
   /**
    * Valid file extensions
    * @default ['tsx', 'ts', 'jsx', 'jsx']

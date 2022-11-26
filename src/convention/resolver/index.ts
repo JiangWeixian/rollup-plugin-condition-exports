@@ -91,38 +91,40 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
 }
 
 // FIXME: src/exports/[..all] is not allowed
-const _resolveExports = (routes: ReactRoute[], ctx: PackageContext, exports: any = {}) => {
+const _resolveExports = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) => {
   for (const route of routes) {
+    const path = route.path && route.path !== '.' ? `./${route.path}` : '.'
     if (route.leaf) {
+      if (path === '.') {
+        pkg.main = `${route.element}.${ctx.options.cjsExtension}`
+        pkg.module = `${route.element}.${ctx.options.esmExtension}`
+        pkg.types = `./${route.element}.d.ts`
+      } else {
+        pkg.typesVersions[`${path.slice(2)}`] = [`${route.element}.d.ts`]
+      }
       console.log(route.path, route.element)
-      const path = route.path && route.path !== '.' ? `./${route.path}` : '.'
-      exports[`${path}`] = {
+      pkg.exports[`${path}`] = {
         require: `./${route.element}.${ctx.options.cjsExtension}`,
         import: `./${route.element}.${ctx.options.esmExtension}`,
+        types: `./${route.element}.d.ts`,
       }
     }
     if (route.children) {
-      _resolveExports(route.children, ctx, exports)
+      _resolveExports(route.children, ctx, pkg)
     }
-  }
-}
-
-const resolveMainFields = (routes: ReactRoute[], ctx: PackageContext, mains: any = {}) => {
-  const route = routes.find((route) => route.path === '.')
-  if (route) {
-    mains.main = `${route.element}.${ctx.options.cjsExtension}`
-    mains.module = `${route.element}.${ctx.options.esmExtension}`
   }
 }
 
 export async function resolveExports(ctx: PackageContext) {
   const finalRoutes = await computeExports(ctx)
-  const exports: Record<string, string | Record<string, string>> = {}
-  const mains: Record<string, string | Record<string, string>> = {}
+  const pkg: any = {
+    exports: {},
+    typesVersions: {},
+  }
   exports['./package.json'] = './package.json'
-  _resolveExports(finalRoutes, ctx, exports)
-  resolveMainFields(finalRoutes, ctx, mains)
-  console.log(exports, mains)
+  _resolveExports(finalRoutes, ctx, pkg)
+  pkg.typesVersions = { '*': pkg.typesVersions }
+  console.log(pkg)
   return exports
 }
 
