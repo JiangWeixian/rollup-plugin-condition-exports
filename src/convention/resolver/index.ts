@@ -145,7 +145,7 @@ export async function resolvePkg(ctx: PackageContext) {
   _resolvePkg(finalRoutes, ctx, pkg)
   pkg.typesVersions = { '*': pkg.typesVersions }
   console.log(JSON.stringify(pkg, null, 2))
-  return exports
+  return pkg
 }
 
 export function resolver(): PageResolver {
@@ -153,9 +153,8 @@ export function resolver(): PageResolver {
     resolveExtensions() {
       return ['tsx', 'jsx', 'ts', 'js']
     },
-    async resolveExports(ctx) {
-      // TODO: typo
-      return resolvePkg(ctx) as any
+    async resolvePkg(ctx) {
+      return resolvePkg(ctx)
     },
   }
 }

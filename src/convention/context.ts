@@ -10,6 +10,7 @@ import type { PageOptions, ResolvedOptions, UserOptions } from './types'
 export interface PageRoute {
   path: string
   route: string
+  rawPath: string
 }
 
 export class PackageContext {
@@ -38,6 +39,7 @@ export class PackageContext {
       )
       this._pageRouteMap.set(p, {
         path,
+        rawPath: p,
         route,
       })
     }
@@ -48,15 +50,18 @@ export class PackageContext {
     this._pageRouteMap.delete(path)
   }
 
-  async resolveRoutes() {
-    return this.resolver.resolveExports(this)
+  async resolvePkg() {
+    return this.resolver.resolvePkg(this)
+  }
+
+  async resolveInputs() {
+    return [...this._pageRouteMap.values()].map((v) => v.rawPath)
   }
 
   async searchGlob() {
     const pageDirFiles = this.options.dirs.map((page) => {
       const pagesDirPath = slash(resolve(this.options.root, page.dir))
       const files = getPageFiles(pagesDirPath, this.options)
-      console.log(files)
       debug.search(page.dir, files)
       return {
         ...page,

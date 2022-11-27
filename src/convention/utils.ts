@@ -41,12 +41,6 @@ export function isCatchAllRoute(routePath: string) {
   return cacheAllRouteRE.test(routePath)
 }
 
-export function resolveImportMode(filepath: string, options: ResolvedOptions) {
-  const mode = options.importMode
-  if (typeof mode === 'function') return mode(filepath, options)
-  return mode
-}
-
 export function normalizeName(name: string, isDynamic: boolean) {
   if (!isDynamic) return name
 

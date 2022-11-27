@@ -27,7 +27,7 @@ export interface PageOptions {
 
 export interface PageResolver {
   resolveExtensions: () => string[]
-  resolveExports: (ctx: PackageContext) => Awaitable<ReactRoute[]>
+  resolvePkg: (ctx: PackageContext) => Awaitable<any>
 }
 
 /**

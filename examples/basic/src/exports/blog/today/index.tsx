@@ -1,9 +1,1 @@
-import type { FC } from 'react'
-
-const index: FC = () => {
-  return (
-    <p>blog/today/index</p>
-  )
-}
-
-export default index
+export const name = '1'

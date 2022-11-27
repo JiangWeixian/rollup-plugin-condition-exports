@@ -21,7 +21,8 @@
     "build:array": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.array.js --silent",
     "build:pattern": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.pattern.js --silent",
     "build:alias": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.alias.js --silent",
-    "build:components": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.components.js --silent"
+    "build:components": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.components.js --silent",
+    "build:next": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.next.js --silent"
   },
   "dependencies": {
     "functional-md": "^1.1.0",
@@ -44,25 +45,105 @@
     "typescript": "4.4.3"
   },
   "exports": {
-    "./package.json": "./package.json",
-    "./a": {
-      "require": "./cjs/a.cjs",
-      "types": "./cjs/a.d.ts",
-      "import": "./es/a.mjs"
+    "./about": {
+      "require": "./dist/about/index.cjs",
+      "import": "./dist/about/index.mjs",
+      "types": "./dist/about/index.d.ts"
+    },
+    "./components": {
+      "require": "./dist/components.cjs",
+      "import": "./dist/components.mjs",
+      "types": "./dist/components.d.ts"
+    },
+    "./disabled-condition": {
+      "require": "./dist/disabled-condition.cjs",
+      "import": "./dist/disabled-condition.mjs",
+      "types": "./dist/disabled-condition.d.ts"
     },
     ".": {
-      "require": "./cjs/index.cjs",
-      "types": "./cjs/index.d.ts",
-      "import": "./es/index.mjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./blog/*": {
+      "require": "./dist/blog/[...all].cjs",
+      "import": "./dist/blog/[...all].mjs",
+      "types": "./dist/blog/[...all].d.ts"
+    },
+    "./blog/:id": {
+      "require": "./dist/blog/[id].cjs",
+      "import": "./dist/blog/[id].mjs",
+      "types": "./dist/blog/[id].d.ts"
+    },
+    "./blog": {
+      "require": "./dist/blog/index.cjs",
+      "import": "./dist/blog/index.mjs",
+      "types": "./dist/blog/index.d.ts"
+    },
+    "./condition/browser": {
+      "require": "./dist/condition/browser.cjs",
+      "import": "./dist/condition/browser.mjs",
+      "types": "./dist/condition/browser.d.ts"
+    },
+    "./condition/node": {
+      "require": "./dist/condition/node.cjs",
+      "import": "./dist/condition/node.mjs",
+      "types": "./dist/condition/node.d.ts"
+    },
+    "./disabled-condition/node": {
+      "require": "./dist/disabled-condition/node.cjs",
+      "import": "./dist/disabled-condition/node.mjs",
+      "types": "./dist/disabled-condition/node.d.ts"
+    },
+    "./blog/today/*": {
+      "require": "./dist/blog/today/[...all].cjs",
+      "import": "./dist/blog/today/[...all].mjs",
+      "types": "./dist/blog/today/[...all].d.ts"
+    },
+    "./blog/today": {
+      "require": "./dist/blog/today/index.cjs",
+      "import": "./dist/blog/today/index.mjs",
+      "types": "./dist/blog/today/index.d.ts"
     }
   },
   "typesVersions": {
     "*": {
-      "a": [
-        "cjs/a.d.ts"
+      "about": [
+        "dist/about/index.d.ts"
+      ],
+      "components": [
+        "dist/components.d.ts"
+      ],
+      "disabled-condition": [
+        "dist/disabled-condition.d.ts"
+      ],
+      "blog/*": [
+        "dist/blog/[...all].d.ts"
+      ],
+      "blog/:id": [
+        "dist/blog/[id].d.ts"
+      ],
+      "blog": [
+        "dist/blog/index.d.ts"
+      ],
+      "condition/browser": [
+        "dist/condition/browser.d.ts"
+      ],
+      "condition/node": [
+        "dist/condition/node.d.ts"
+      ],
+      "disabled-condition/node": [
+        "dist/disabled-condition/node.d.ts"
+      ],
+      "blog/today/*": [
+        "dist/blog/today/[...all].d.ts"
+      ],
+      "blog/today": [
+        "dist/blog/today/index.d.ts"
       ]
     }
   },
-  "main": "cjs/index.cjs",
-  "module": "es/index.mjs"
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts"
 }
