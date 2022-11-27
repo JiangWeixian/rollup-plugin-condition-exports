@@ -27,6 +27,18 @@
       "require": "./dist/md.cjs",
       "import": "./dist/md.mjs",
       "types": "./dist/md.d.ts"
+    },
+    "./feature": {
+      "browser": {
+        "require": "./dist/feature/browser.cjs",
+        "import": "./dist/feature/browser.mjs",
+        "types": "./dist/feature/browser.d.ts"
+      },
+      "node": {
+        "require": "./dist/feature/node.cjs",
+        "import": "./dist/feature/node.mjs",
+        "types": "./dist/feature/node.d.ts"
+      }
     }
   },
   "main": "dist/index.cjs",
@@ -59,6 +71,9 @@
     "*": {
       "md": [
         "dist/md.d.ts"
+      ],
+      "feature": [
+        "dist/feature/node.d.ts"
       ]
     }
   }

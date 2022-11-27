@@ -1,9 +1,10 @@
 # rollup-plugin-condition-exports
-*auto setup `main/module/typings/exports/typesVersions`*
 
 [![npm](https://img.shields.io/npm/v/rollup-plugin-condition-exports)](https://github.com/JiangWeixian/rollup-plugin-condition-exports) [![GitHub](https://img.shields.io/npm/l/rollup-plugin-condition-exports)](https://github.com/JiangWeixian/rollup-plugin-condition-exports) [![stackblitz](https://img.shields.io/badge/%E2%9A%A1%EF%B8%8Fstackblitz-online-blue)](https://stackblitz.com/github/JiangWeixian/rollup-plugin-condition-exports)
 
 [Edit on StackBlitz ⚡️](https://stackblitz.com/github/JiangWeixian/rollup-plugin-condition-exports)
+
+File system based api exports convention, like `nextjs`. files under `src/exports` will setup `main/module/typings/exports/typesVersions` in `package.json`
 
 ## install
 
@@ -21,7 +22,6 @@ import { defineConfig } from 'rollup'
 
 export default defineConfig([
   {
-    input: ['src/index.ts', 'src/do-something'],
     plugins: [
       typescript(), // so Rollup can convert TypeScript to JavaScript
       commonjs(),
@@ -35,30 +35,48 @@ export default defineConfig([
 ])
 ```
 
+files under `src/exports` will setup `main/module/typings/exports/typesVersions` in `package.json`
+
+```console
+src
+  exports
+    feature
+      node
+      browser
+    index.ts
+```
+
 👇 will setup fields in package
 
 ```json
 {
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts",
-    },
-    "./do-something": {
-      "import": "./dist/do-something/index.mjs",
-      "require": "./dist/do-something/index.cjs",
-      "types": "./dist/do-something/index.d.ts",
-    },
     "./package.json": "./package.json",
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./feature": {
+      "browser": {
+        "require": "./dist/feature/browser.cjs",
+        "import": "./dist/feature/browser.mjs",
+        "types": "./dist/feature/browser.d.ts"
+      },
+      "node": {
+        "require": "./dist/feature/node.cjs",
+        "import": "./dist/feature/node.mjs",
+        "types": "./dist/feature/node.d.ts"
+      }
+    }
   },
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "typesVersions": {
     "*": {
-      "do-something": [
-        "dist/do-something/index.d.ts",
+      "feature": [
+        "dist/feature/node.d.ts",
       ],
     },
   },
@@ -79,33 +97,52 @@ see [examples](https://github.com/JiangWeixian/rollup-plugin-condition-exports/e
 
 enable setup `typesVersions` field.
 
-`names: string[]`
+### `dirs`
 
-default infer from rollup bundle info
+- types: `string | (string | PageOptions)[]`
+- default: `src/exports`
 
-`formats: ['cjs', 'es']`
+Path to exports api directory
 
-default infer from rollup options, enable/disable exports.require or exports.import
+### `exclude`
 
-`dirs: string | { cjs: string, es: string }`
+- types: `string[]`
 
-default infer from rollup bundle info
+An array of glob patterns to exclude matches.
+
+### `cjsExtension`
+
+- types: `string`
+- default: `cjs`
+
+### `mjsExtension`
+
+- types: `string`
+- default: `mjs`
 
 `exts: string | { cjs: string, es: string }`
 
-bundle file extname
+### `outDir`
 
-`glob: string[]`
+- types: `string`
+- default: `dist`
 
-useful for like `react-components` project, get all exports module name by `fast-glob's patterns`
+Outdir of bundled files
 
-`base: string`
 
-replace prefix string of glob result.
+### `declarationDir`
 
-`disabledFields: string[]`
+- types: `string`
+- default: `dist`
 
-force disable some fields, regardless of other settings
+Outdir of declaration files
+
+### `conditions`
+
+- types: `string[]`
+- default: `['node', 'browser', 'deno']`
+
+Condition exports name. checkout [nodejs#condition-exports](https://nodejs.org/api/packages.html#conditional-exports) for documentation about condition export names.
 
 ## development
 

@@ -69,7 +69,7 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
 
       // only enable condition exports on dirs
       if (parent) {
-        route.condition = parent ? undefined : route.condition
+        route.condition = parent.element ? undefined : route.condition
       }
 
       // only nested route on condition exports dir
