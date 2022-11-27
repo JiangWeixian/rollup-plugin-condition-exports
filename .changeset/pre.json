@@ -1,0 +1,9 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "rollup-plugin-condition-exports": "1.4.1",
+    "examples-basic": "1.8.0"
+  },
+  "changesets": []
+}
