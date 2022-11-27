@@ -13,9 +13,12 @@ export default defineConfig([
   // an array for the `output` option, where we can specify
   // `file` and `format` for each target)
   {
-    input: ['src/index.ts', 'src/md.ts'],
     plugins: [
-      typescript(), // so Rollup can convert TypeScript to JavaScript
+      typescript({
+        tsconfigOverride: {
+          exclude: ['components'],
+        },
+      }), // so Rollup can convert TypeScript to JavaScript
       alias({
         resolve: ['.ts', '.js', '.tsx', '.jsx'],
         entries: [{ find: '@/', replacement: './src/' }],
@@ -26,7 +29,7 @@ export default defineConfig([
     ],
     output: [
       { dir: 'cjs', format: 'cjs' },
-      { dir: 'es', entryFileNames: '[name].mjs', format: 'esm' },
+      { dir: 'es', entryFileNames: '[name].mjs', format: 'es' },
     ],
   },
 ])

@@ -5,7 +5,7 @@ import { PackageContext } from '../src/convention/context'
 
 const FIXTURES = path.resolve(__dirname, './fixtures')
 
-describe('resolver', () => {
+describe('basic', () => {
   it('search inputs', async () => {
     const ctx = new PackageContext({ dirs: 'basic' }, FIXTURES)
     await ctx.searchGlob()
@@ -27,6 +27,21 @@ describe('resolver', () => {
   "/basic/blog/today/index.tsx",
 ]
     `)
+  })
+
+  it('modify generated files', async () => {
+    const ctx = new PackageContext(
+      {
+        dirs: 'basic',
+        async onRoutesGenerated(routes) {
+          return routes.filter((route) => !route.element?.includes('index'))
+        },
+      },
+      FIXTURES,
+    )
+    await ctx.searchGlob()
+    const pkg = await ctx.resolvePkg()
+    expect(pkg).toMatchSnapshot()
   })
   it('resolve pkg', async () => {
     const ctx = new PackageContext({ dirs: 'basic' }, FIXTURES)

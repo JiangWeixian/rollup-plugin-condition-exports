@@ -137,7 +137,7 @@ export async function resolvePkg(ctx: PackageContext) {
     exports: {},
     typesVersions: {},
   }
-  exports['./package.json'] = './package.json'
+  pkg.exports['./package.json'] = './package.json'
   _resolvePkg(finalRoutes, ctx, pkg)
   pkg.typesVersions = { '*': pkg.typesVersions }
   return pkg
