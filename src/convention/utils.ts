@@ -7,10 +7,11 @@ import Debug from 'debug'
 import type { ResolvedOptions } from './types'
 
 export const debug = {
-  env: Debug('plugin-ce:env'),
-  options: Debug('plugin-ce:options'),
-  pages: Debug('plugin-ce:pages'),
-  search: Debug('plugin-ce:search'),
+  env: Debug('rpce:env'),
+  options: Debug('rpce:options'),
+  pages: Debug('rpce:pages'),
+  search: Debug('rpce:search'),
+  pkg: Debug('rpce:pkg'),
 }
 
 export function extsToGlob(extensions: string[]) {

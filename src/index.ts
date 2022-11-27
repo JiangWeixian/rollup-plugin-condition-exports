@@ -1,14 +1,12 @@
 import type { Plugin } from 'rollup'
 import path from 'path'
 import fs from 'fs-extra'
-import debug from 'debug'
 
 import type { UserOptions } from './convention/types'
 import { PackageContext } from './convention/context'
+import { debug } from './convention/utils'
 
 const NAME = 'rpce'
-
-const log = debug(NAME)
 
 function plugin({ ...rest }: UserOptions = {}): Plugin {
   const options: UserOptions = {
@@ -20,7 +18,6 @@ function plugin({ ...rest }: UserOptions = {}): Plugin {
     async options(options) {
       await ctx.searchGlob()
       const input = await ctx.resolveInputs()
-      console.log(options)
       return {
         ...options,
         input,
@@ -30,7 +27,7 @@ function plugin({ ...rest }: UserOptions = {}): Plugin {
     async writeBundle() {
       let pkg = fs.readJSONSync(path.resolve(process.cwd(), 'package.json'))
       const partialPkg = await ctx.resolvePkg()
-      log('partialPkg %o', partialPkg)
+      debug.pkg('partialPkg %o', partialPkg)
       pkg = Object.assign(pkg, partialPkg)
       fs.writeJSONSync(path.resolve(process.cwd(), 'package.json'), pkg, {
         spaces: 2,

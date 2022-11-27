@@ -1,4 +1,3 @@
-import type { ReactRoute } from './resolver'
 import type { PackageContext } from './context'
 import type { Awaitable } from '@antfu/utils'
 

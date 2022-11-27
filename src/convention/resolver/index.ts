@@ -136,7 +136,6 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
 
 export async function resolvePkg(ctx: PackageContext) {
   const finalRoutes = await computeExports(ctx)
-  console.log(JSON.stringify(finalRoutes, null, 2))
   const pkg: any = {
     exports: {},
     typesVersions: {},
@@ -144,7 +143,6 @@ export async function resolvePkg(ctx: PackageContext) {
   exports['./package.json'] = './package.json'
   _resolvePkg(finalRoutes, ctx, pkg)
   pkg.typesVersions = { '*': pkg.typesVersions }
-  console.log(JSON.stringify(pkg, null, 2))
   return pkg
 }
 
