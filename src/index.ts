@@ -2,74 +2,41 @@ import type { Plugin } from 'rollup'
 import path from 'path'
 import fs from 'fs-extra'
 import debug from 'debug'
-import fg from 'fast-glob'
-import { exportsTemplate, ExportsTemplateParams } from '@lotips/core/exports-template'
+
+import type { UserOptions } from './convention/types'
+import { PackageContext } from './convention/context'
 
 const NAME = 'rpce'
 
 const log = debug(NAME)
 
-type Options = Partial<ExportsTemplateParams> & {
-  /**
-   * Glob input
-   * @example ['components/xx/index.tsx']
-   */
-  glob?: string[]
-  /**
-   * Replace base prefix of glob result
-   * @example components make `components/button/index` -> `button.index`
-   */
-  base?: string
-}
-
-export default function plugin(
-  { types = true, exts, ...params }: Options = { types: true },
-): Plugin {
-  const names: string[] = []
-  const formats: ExportsTemplateParams['formats'] = []
-  const dirs: ExportsTemplateParams['dirs'] = {
-    cjs: 'cjs',
-    es: 'mjs',
+function plugin({ ...rest }: UserOptions = {}): Plugin {
+  const options: UserOptions = {
+    ...rest,
   }
-  const globNames = !params.glob
-    ? undefined
-    : fg
-        .sync(params.glob)
-        .map((name) => name.replace(params.base || '', '').replace(path.extname(name), ''))
+  const ctx = new PackageContext(options)
   return {
     name: NAME,
-
-    generateBundle(options, bundle) {
-      const dir = options.dir || 'dist'
-      if (options.format !== 'cjs' && options.format !== 'es') {
-        return
+    async options(options) {
+      await ctx.searchGlob()
+      const input = await ctx.resolveInputs()
+      console.log(options)
+      return {
+        ...options,
+        input,
       }
-      formats.push(options.format)
-      if (options.format === 'cjs') {
-        Object.keys(bundle)
-          .filter((filename) => bundle[filename].name)
-          .forEach((filename) => {
-            names.push(bundle[filename].name!)
-          })
-      }
-      dirs[options.format] = dir
     },
 
-    writeBundle() {
+    async writeBundle() {
       let pkg = fs.readJSONSync(path.resolve(process.cwd(), 'package.json'))
-      const exports = exportsTemplate({
-        names: globNames || params.names || names,
-        dirs: params.dirs || dirs,
-        exts,
-        types,
-        formats: params.formats || formats,
-        disabledFields: params.disabledFields,
-      })
-      log('exports %s', JSON.stringify(exports))
-      pkg = Object.assign(pkg, exports)
+      const partialPkg = await ctx.resolvePkg()
+      log('partialPkg %o', partialPkg)
+      pkg = Object.assign(pkg, partialPkg)
       fs.writeJSONSync(path.resolve(process.cwd(), 'package.json'), pkg, {
         spaces: 2,
       })
     },
   }
 }
+
+export default plugin

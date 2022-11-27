@@ -1,8 +1,10 @@
-import typescript from 'rollup-plugin-typescript2'
+import esbuild from 'rollup-plugin-esbuild'
 import alias from '@rollup/plugin-alias'
-import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle'
+import { defineConfig } from 'rollup'
+import { externals } from 'rollup-plugin-node-externals'
+import size from 'rollup-plugin-filesize'
 
-export default [
+export default defineConfig([
   // CommonJS (for Node) and ES module (for bundlers) build.
   // (We could have three entries in the configuration array
   // instead of two, but it's quicker to generate multiple
@@ -10,18 +12,24 @@ export default [
   // an array for the `output` option, where we can specify
   // `file` and `format` for each target)
   {
-    input: ['src/index.ts', 'src/next.ts'],
+    input: ['src/index.ts'],
     plugins: [
-      typescript(), // so Rollup can convert TypeScript to JavaScript
+      esbuild({
+        target: 'es2020',
+      }), // so Rollup can convert TypeScript to JavaScript
       alias({
         resolve: ['.ts', '.js', '.tsx', '.jsx'],
         entries: [{ find: '@/', replacement: './src/' }],
       }),
       // exclude dependencies and peerDependencies
-      excludeDependenciesFromBundle({
-        peerDependencies: true,
+      externals({
+        devDeps: false,
       }),
+      size(),
     ],
-    output: [{ dir: 'dist', format: 'cjs' }],
+    output: [
+      { dir: 'lib', format: 'cjs', entryFileNames: '[name].cjs' },
+      { dir: 'lib', format: 'esm', entryFileNames: '[name].mjs' },
+    ],
   },
-]
+])
