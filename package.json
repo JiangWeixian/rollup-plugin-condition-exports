@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-condition-exports",
-  "version": "1.4.1",
+  "version": "2.0.0-next.0",
   "license": "MIT",
   "homepage": "https://github.com/JiangWeixian/rollup-plugin-condition-exports#readme",
   "repository": {
