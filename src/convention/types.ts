@@ -73,17 +73,9 @@ interface Options {
    */
   conditions: string[]
   /**
-   * Extend route records
-   */
-  extendRoute?: (route: any, parent: any | undefined) => any | void
-  /**
    * Custom generated routes
    */
   onRoutesGenerated?: (routes: any[]) => Awaitable<any[] | void>
-  /**
-   * Custom generated client code
-   */
-  onClientGenerated?: (clientCode: string) => Awaitable<string | void>
 }
 
 export type UserOptions = Partial<Options>

@@ -28,9 +28,7 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
   const {
     dirs = ['src/exports'],
     exclude = ['node_modules', '.git', '**/__*__/**'],
-    extendRoute,
     onRoutesGenerated,
-    onClientGenerated,
     cjsExtension = 'cjs',
     esmExtension = 'mjs',
     outDir = 'dist',
@@ -56,9 +54,7 @@ export function resolveOptions(userOptions: UserOptions, viteRoot?: string): Res
     extensions,
     exclude,
     extensionsRE,
-    extendRoute,
     onRoutesGenerated,
-    onClientGenerated,
     cjsExtension,
     esmExtension,
   }

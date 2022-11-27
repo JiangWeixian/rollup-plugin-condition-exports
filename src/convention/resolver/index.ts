@@ -23,8 +23,6 @@ function prepareRoutes(routes: ReactRoute[], options: ResolvedOptions, parent?: 
     if (parent) route.path = route.path?.replace(/^\//, '')
 
     if (route.children) route.children = prepareRoutes(route.children, options, route)
-
-    Object.assign(route, options.extendRoute?.(route, parent) || {})
   }
 
   return routes
@@ -101,7 +99,6 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
   return finalRoutes
 }
 
-// FIXME: src/exports/[..all] is not allowed
 const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) => {
   for (const route of routes) {
     const path = route.path && route.path !== '.' ? `./${route.path}` : '.'
@@ -109,7 +106,7 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
       if (path === '.') {
         pkg.main = `${route.element}.${ctx.options.cjsExtension}`
         pkg.module = `${route.element}.${ctx.options.esmExtension}`
-        pkg.types = `${route.element}.d.ts`
+        pkg.types = `${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`
       } else {
         pkg.typesVersions[`${path.slice(2)}`] = [
           `${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`,
