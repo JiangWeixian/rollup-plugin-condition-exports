@@ -1,5 +1,88 @@
 // Vitest Snapshot v1
 
+exports[`basic > modify generated files 1`] = `
+{
+  "exports": {
+    "./about": {
+      "import": "./dist/about.mjs",
+      "require": "./dist/about.cjs",
+      "types": "./dist/about.d.ts",
+    },
+    "./blog/*": {
+      "import": "./dist/blog/[...all].mjs",
+      "require": "./dist/blog/[...all].cjs",
+      "types": "./dist/blog/[...all].d.ts",
+    },
+    "./blog/:id": {
+      "import": "./dist/blog/[id].mjs",
+      "require": "./dist/blog/[id].cjs",
+      "types": "./dist/blog/[id].d.ts",
+    },
+    "./blog/today/*": {
+      "import": "./dist/blog/today/[...all].mjs",
+      "require": "./dist/blog/today/[...all].cjs",
+      "types": "./dist/blog/today/[...all].d.ts",
+    },
+    "./components": {
+      "import": "./dist/components.mjs",
+      "require": "./dist/components.cjs",
+      "types": "./dist/components.d.ts",
+    },
+    "./condition": {
+      "browser": {
+        "import": "./dist/condition/browser.mjs",
+        "require": "./dist/condition/browser.cjs",
+        "types": "./dist/condition/browser.d.ts",
+      },
+      "node": {
+        "import": "./dist/condition/node.mjs",
+        "require": "./dist/condition/node.cjs",
+        "types": "./dist/condition/node.d.ts",
+      },
+    },
+    "./no-condition": {
+      "import": "./dist/no-condition.mjs",
+      "require": "./dist/no-condition.cjs",
+      "types": "./dist/no-condition.d.ts",
+    },
+    "./no-condition/node": {
+      "import": "./dist/no-condition/node.mjs",
+      "require": "./dist/no-condition/node.cjs",
+      "types": "./dist/no-condition/node.d.ts",
+    },
+    "./package.json": "./package.json",
+  },
+  "typesVersions": {
+    "*": {
+      "about": [
+        "dist/about.d.ts",
+      ],
+      "blog/*": [
+        "dist/blog/[...all].d.ts",
+      ],
+      "blog/:id": [
+        "dist/blog/[id].d.ts",
+      ],
+      "blog/today/*": [
+        "dist/blog/today/[...all].d.ts",
+      ],
+      "components": [
+        "dist/components.d.ts",
+      ],
+      "condition": [
+        "dist/condition/node.d.ts",
+      ],
+      "no-condition": [
+        "dist/no-condition.d.ts",
+      ],
+      "no-condition/node": [
+        "dist/no-condition/node.d.ts",
+      ],
+    },
+  },
+}
+`;
+
 exports[`basic > resolve pkg 1`] = `
 {
   "exports": {
