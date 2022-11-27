@@ -21,8 +21,7 @@
     "build:array": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.array.js --silent",
     "build:pattern": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.pattern.js --silent",
     "build:alias": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.alias.js --silent",
-    "build:components": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.components.js --silent",
-    "build:next": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.next.js --silent"
+    "build:components": "rimraf cjs es && DEBUG=rpce* rollup -c ./rollup.config.components.js --silent"
   },
   "dependencies": {
     "functional-md": "^1.1.0",

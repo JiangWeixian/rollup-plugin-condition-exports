@@ -1,0 +1,108 @@
+// Vitest Snapshot v1
+
+exports[`resolver > resolve pkg 1`] = `
+{
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+    },
+    "./about": {
+      "import": "./dist/about/index.mjs",
+      "require": "./dist/about/index.cjs",
+      "types": "./dist/about/index.d.ts",
+    },
+    "./blog": {
+      "import": "./dist/blog/index.mjs",
+      "require": "./dist/blog/index.cjs",
+      "types": "./dist/blog/index.d.ts",
+    },
+    "./blog/*": {
+      "import": "./dist/blog/[...all].mjs",
+      "require": "./dist/blog/[...all].cjs",
+      "types": "./dist/blog/[...all].d.ts",
+    },
+    "./blog/:id": {
+      "import": "./dist/blog/[id].mjs",
+      "require": "./dist/blog/[id].cjs",
+      "types": "./dist/blog/[id].d.ts",
+    },
+    "./blog/today": {
+      "import": "./dist/blog/today/index.mjs",
+      "require": "./dist/blog/today/index.cjs",
+      "types": "./dist/blog/today/index.d.ts",
+    },
+    "./blog/today/*": {
+      "import": "./dist/blog/today/[...all].mjs",
+      "require": "./dist/blog/today/[...all].cjs",
+      "types": "./dist/blog/today/[...all].d.ts",
+    },
+    "./components": {
+      "import": "./dist/components.mjs",
+      "require": "./dist/components.cjs",
+      "types": "./dist/components.d.ts",
+    },
+    "./condition/browser": {
+      "import": "./dist/condition/browser.mjs",
+      "require": "./dist/condition/browser.cjs",
+      "types": "./dist/condition/browser.d.ts",
+    },
+    "./condition/node": {
+      "import": "./dist/condition/node.mjs",
+      "require": "./dist/condition/node.cjs",
+      "types": "./dist/condition/node.d.ts",
+    },
+    "./no-condition": {
+      "import": "./dist/no-condition.mjs",
+      "require": "./dist/no-condition.cjs",
+      "types": "./dist/no-condition.d.ts",
+    },
+    "./no-condition/node": {
+      "import": "./dist/no-condition/node.mjs",
+      "require": "./dist/no-condition/node.cjs",
+      "types": "./dist/no-condition/node.d.ts",
+    },
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "about": [
+        "dist/about/index.d.ts",
+      ],
+      "blog": [
+        "dist/blog/index.d.ts",
+      ],
+      "blog/*": [
+        "dist/blog/[...all].d.ts",
+      ],
+      "blog/:id": [
+        "dist/blog/[id].d.ts",
+      ],
+      "blog/today": [
+        "dist/blog/today/index.d.ts",
+      ],
+      "blog/today/*": [
+        "dist/blog/today/[...all].d.ts",
+      ],
+      "components": [
+        "dist/components.d.ts",
+      ],
+      "condition/browser": [
+        "dist/condition/browser.d.ts",
+      ],
+      "condition/node": [
+        "dist/condition/node.d.ts",
+      ],
+      "no-condition": [
+        "dist/no-condition.d.ts",
+      ],
+      "no-condition/node": [
+        "dist/no-condition/node.d.ts",
+      ],
+    },
+  },
+}
+`;
