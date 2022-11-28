@@ -1,8 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { buildReactRoutePath, countSlash } from '../utils'
 import type { Optional, PageResolver, ResolvedOptions } from '../types'
 import type { PackageContext } from '../context'
 
 import { join } from 'path'
+import { isEmpty } from 'lodash-es'
 
 export interface ReactRouteBase {
   children?: ReactRouteBase[]
@@ -139,7 +141,7 @@ export async function resolvePkg(ctx: PackageContext) {
   }
   pkg.exports['./package.json'] = './package.json'
   _resolvePkg(finalRoutes, ctx, pkg)
-  pkg.typesVersions = { '*': pkg.typesVersions }
+  pkg.typesVersions = !isEmpty(pkg.typesVersions) ? { '*': pkg.typesVersions } : undefined
   return pkg
 }
 

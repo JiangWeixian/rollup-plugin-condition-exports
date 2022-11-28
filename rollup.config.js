@@ -1,6 +1,8 @@
 import esbuild from 'rollup-plugin-esbuild'
 import alias from '@rollup/plugin-alias'
 import { defineConfig } from 'rollup'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 import { externals } from 'rollup-plugin-node-externals'
 import size from 'rollup-plugin-filesize'
 
@@ -20,6 +22,10 @@ export default defineConfig([
       alias({
         resolve: ['.ts', '.js', '.tsx', '.jsx'],
         entries: [{ find: '@/', replacement: './src/' }],
+      }),
+      commonjs(),
+      resolve({
+        preferBuiltins: true,
       }),
       // exclude dependencies and peerDependencies
       externals({
