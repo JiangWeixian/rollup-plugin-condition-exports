@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 2.0.0-next.0
+
+### Major Changes
+
+- 9afcc7d: file system based api exports
+
 ## 1.4.1
 
 ### Patch Changes
