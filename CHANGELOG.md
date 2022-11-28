@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 2.0.0-next.1
+
+### Patch Changes
+
+- a186cc8: only index should disable typesversions fields
+
 ## 2.0.0-next.0
 
 ### Major Changes

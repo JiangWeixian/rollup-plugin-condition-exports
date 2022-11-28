@@ -6,6 +6,7 @@
     "examples-basic": "1.8.0"
   },
   "changesets": [
+    "clever-rice-behave",
     "rotten-melons-attend"
   ]
 }
