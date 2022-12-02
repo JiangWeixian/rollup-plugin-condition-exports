@@ -9,7 +9,7 @@ File system based api exports convention, like `nextjs`. files under `src/export
 ## install
 
 ```console
-pnpm i rollup-plugin-condition-exports
+pnpm i rollup-plugin-condition-exports@next
 ```
 
 ## usage
@@ -119,8 +119,6 @@ An array of glob patterns to exclude matches.
 
 - types: `string`
 - default: `mjs`
-
-`exts: string | { cjs: string, es: string }`
 
 ### `outDir`
 
