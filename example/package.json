@@ -46,7 +46,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rimraf cjs es && DEBUG=rpce* rollup -c --silent"
+    "build": "rimraf dist && DEBUG=rpce* rollup -c --silent"
   },
   "dependencies": {
     "functional-md": "^1.1.0",

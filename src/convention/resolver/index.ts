@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { buildReactRoutePath, countSlash } from '../utils'
+import { buildReactRoutePath, countSlash, debug } from '../utils'
 import type { Optional, PageResolver, ResolvedOptions } from '../types'
 import type { PackageContext } from '../context'
 
@@ -135,6 +135,7 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
 
 export async function resolvePkg(ctx: PackageContext) {
   const finalRoutes = await computeExports(ctx)
+  debug.search('final routes %o', finalRoutes)
   const pkg: any = {
     exports: {},
     typesVersions: {},

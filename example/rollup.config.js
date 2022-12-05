@@ -28,8 +28,8 @@ export default defineConfig([
       size(),
     ],
     output: [
-      { dir: 'cjs', format: 'cjs' },
-      { dir: 'es', entryFileNames: '[name].mjs', format: 'es' },
+      { dir: 'dist', entryFileNames: '[name].cjs', format: 'cjs' },
+      { dir: 'dist', entryFileNames: '[name].mjs', format: 'es' },
     ],
   },
 ])
