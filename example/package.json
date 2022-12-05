@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "functional-md": "^1.1.0",
-    "rollup-plugin-condition-exports": "workspace:^2.0.0-next.1",
+    "rollup-plugin-condition-exports": "workspace:^2.0.0-next.2",
     "rollup-plugin-size": "^0.2.2"
   },
   "devDependencies": {
