@@ -16,6 +16,10 @@ export default defineConfig([
   {
     input: ['src/index.ts'],
     plugins: [
+      // exclude dependencies and peerDependencies
+      externals({
+        devDeps: false,
+      }),
       esbuild({
         target: 'es2020',
       }), // so Rollup can convert TypeScript to JavaScript
@@ -26,10 +30,6 @@ export default defineConfig([
       commonjs(),
       resolve({
         preferBuiltins: true,
-      }),
-      // exclude dependencies and peerDependencies
-      externals({
-        devDeps: false,
       }),
       size(),
     ],
