@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 2.0.0-next.3
+
+### Patch Changes
+
+- 0eb29c2: fix wrong declaration path define
+
 ## 2.0.0-next.2
 
 ### Patch Changes
