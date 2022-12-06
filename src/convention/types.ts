@@ -4,8 +4,15 @@ import type { Awaitable } from '@antfu/utils'
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
 
 export interface PageOptions {
+  /**
+   * Paths to the directory to search for page components.
+   * @default 'src/exports'
+   */
   dir: string
-  // TODO: remove it?
+  /**
+   * @example if dir is `src/exports` base will be `src`
+   * @example if dir is `components` base will be `components`
+   */
   base: string
 }
 
