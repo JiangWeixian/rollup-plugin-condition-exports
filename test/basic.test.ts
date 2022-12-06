@@ -12,7 +12,7 @@ describe('basic', () => {
     const inputs = await ctx.resolveInputs()
     const normalizedInputs = Object.fromEntries(
       Object.entries(inputs).map(([id, abPath]) => {
-        return [id, abPath.replace(join(ctx.options.root, ctx.options.dirs.baseRoute), '')]
+        return [id, abPath.replace(join(ctx.options.root, ctx.options.dirs.base), '')]
       }),
     )
     expect(normalizedInputs).toMatchInlineSnapshot(`
@@ -64,7 +64,7 @@ describe('custom dir', () => {
     const inputs = await ctx.resolveInputs()
     const normalizedInputs = Object.fromEntries(
       Object.entries(inputs).map(([id, abPath]) => {
-        return [id, abPath.replace(join(ctx.options.root, ctx.options.dirs.baseRoute), '')]
+        return [id, abPath.replace(join(ctx.options.root, ctx.options.dirs.base), '')]
       }),
     )
     expect(normalizedInputs).toMatchInlineSnapshot(`

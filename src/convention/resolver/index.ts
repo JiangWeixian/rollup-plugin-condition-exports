@@ -102,7 +102,7 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
 }
 
 const formatDeclarationPath = (element: string, ctx: PackageContext) => {
-  const childDir = ctx.options.dirs.dir.replace(ctx.options.dirs.baseRoute, '')
+  const childDir = ctx.options.dirs.dir.replace(ctx.options.dirs.base, '')
   return `${element?.replace(ctx.options.outDir, join(ctx.options.declarationDir, childDir))}.d.ts`
 }
 

@@ -7,11 +7,11 @@ import { defaultExtensions } from './constants'
 import type { ResolvedOptions, UserOptions } from './types'
 
 function resolvePageDirs(dirs: NonNullable<UserOptions['dirs']>, root: string, exclude: string[]) {
-  const option = typeof dirs === 'string' ? { dir: dirs, baseRoute: '' } : dirs
+  const option = typeof dirs === 'string' ? { dir: dirs, base: '' } : dirs
 
   const segments = withoutTrailingSlash(withoutLeadingSlash(option.dir)).split(sep)
   option.dir = slash(resolve(root, option.dir)).replace(`${root}/`, '')
-  option.baseRoute = slash(resolve(root, segments[0])).replace(`${root}/`, '')
+  option.base = slash(resolve(root, segments[0])).replace(`${root}/`, '')
 
   return getPageDirs(option, root, exclude)
 }
