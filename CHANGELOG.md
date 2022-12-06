@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 2.0.0-next.2
+
+### Patch Changes
+
+- 10af9f1: require minial node14
+
 ## 2.0.0-next.1
 
 ### Patch Changes
