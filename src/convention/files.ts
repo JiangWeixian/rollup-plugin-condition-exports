@@ -12,7 +12,7 @@ export function getPageDirs(
   PageOptions: PageOptions,
   root: string,
   exclude: string[],
-): PageOptions[] {
+): PageOptions {
   const dirs = fg.sync(slash(PageOptions.dir), {
     ignore: exclude,
     onlyDirectories: true,
@@ -21,12 +21,10 @@ export function getPageDirs(
     cwd: root,
   })
 
-  const pageDirs = dirs.map((dir) => ({
+  return {
     ...PageOptions,
-    dir,
-  }))
-
-  return pageDirs
+    dir: dirs[0],
+  }
 }
 
 /**

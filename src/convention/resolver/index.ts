@@ -101,6 +101,11 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
   return finalRoutes
 }
 
+const formatDeclarationPath = (element: string, ctx: PackageContext) => {
+  const childDir = ctx.options.dirs.dir.replace(ctx.options.dirs.baseRoute, '')
+  return `${element?.replace(ctx.options.outDir, join(ctx.options.declarationDir, childDir))}.d.ts`
+}
+
 const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) => {
   for (const route of routes) {
     const path = route.path && route.path !== '.' ? `./${route.path}` : '.'
@@ -108,11 +113,9 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
       if (path === '.') {
         pkg.main = `${route.element}.${ctx.options.cjsExtension}`
         pkg.module = `${route.element}.${ctx.options.esmExtension}`
-        pkg.types = `${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`
+        pkg.types = formatDeclarationPath(route.element!, ctx)
       } else {
-        pkg.typesVersions[`${path.slice(2)}`] = [
-          `${route.element?.replace(ctx.options.outDir, ctx.options.declarationDir)}.d.ts`,
-        ]
+        pkg.typesVersions[`${path.slice(2)}`] = [formatDeclarationPath(route.element!, ctx)]
       }
       pkg.exports[`${path}`] = pkg.exports[`${path}`] ?? {}
       let subExports = pkg.exports[`${path}`]
@@ -122,10 +125,7 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
       }
       subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
       subExports.import = `./${route.element}.${ctx.options.esmExtension}`
-      subExports.types = `./${route.element?.replace(
-        ctx.options.outDir,
-        ctx.options.declarationDir,
-      )}.d.ts`
+      subExports.types = `./${formatDeclarationPath(route.element!, ctx)}`
     }
     if (route.children) {
       _resolvePkg(route.children, ctx, pkg)

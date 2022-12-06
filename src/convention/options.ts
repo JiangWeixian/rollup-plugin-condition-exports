@@ -1,32 +1,24 @@
-import { resolve } from 'path'
-import { slash, toArray } from '@antfu/utils'
+import { resolve, sep } from 'path'
+import { slash } from '@antfu/utils'
+import { withoutLeadingSlash, withoutTrailingSlash } from 'ufo'
 import { getPageDirs } from './files'
 
 import { defaultExtensions } from './constants'
-import type { ImportModeResolver, ResolvedOptions, UserOptions } from './types'
+import type { ResolvedOptions, UserOptions } from './types'
 
-function resolvePageDirs(dirs: UserOptions['dirs'], root: string, exclude: string[]) {
-  dirs = toArray(dirs)
-  return dirs.flatMap((dir) => {
-    const option = typeof dir === 'string' ? { dir, baseRoute: '' } : dir
+function resolvePageDirs(dirs: NonNullable<UserOptions['dirs']>, root: string, exclude: string[]) {
+  const option = typeof dirs === 'string' ? { dir: dirs, baseRoute: '' } : dirs
 
-    option.dir = slash(resolve(root, option.dir)).replace(`${root}/`, '')
-    option.baseRoute = option.baseRoute.replace(/^\//, '').replace(/\/$/, '')
+  const segments = withoutTrailingSlash(withoutLeadingSlash(option.dir)).split(sep)
+  option.dir = slash(resolve(root, option.dir)).replace(`${root}/`, '')
+  option.baseRoute = slash(resolve(root, segments[0])).replace(`${root}/`, '')
 
-    return getPageDirs(option, root, exclude)
-  })
-}
-
-export const syncIndexResolver: ImportModeResolver = (filepath, options) => {
-  for (const page of options.dirs) {
-    if (page.baseRoute === '' && filepath.startsWith(`/${page.dir}/index`)) return 'sync'
-  }
-  return 'async'
+  return getPageDirs(option, root, exclude)
 }
 
 export function resolveOptions(userOptions: UserOptions, viteRoot?: string): ResolvedOptions {
   const {
-    dirs = ['src/exports'],
+    dirs = 'src/exports',
     exclude = ['node_modules', '.git', '**/__*__/**'],
     onRoutesGenerated,
     cjsExtension = 'cjs',

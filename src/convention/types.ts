@@ -3,24 +3,9 @@ import type { Awaitable } from '@antfu/utils'
 
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
 
-export type ImportMode = 'sync' | 'async'
-export type ImportModeResolver = (filepath: string, pluginOptions: ResolvedOptions) => ImportMode
-
-export interface ParsedJSX {
-  value: string
-  loc: {
-    start: {
-      line: number
-    }
-  }
-}
-
-export type CustomBlock = Record<string, any>
-
-export type InternalPageResolvers = 'vue' | 'react' | 'solid'
-
 export interface PageOptions {
   dir: string
+  // TODO: remove it?
   baseRoute: string
 }
 
@@ -37,7 +22,7 @@ interface Options {
    * Paths to the directory to search for page components.
    * @default 'src/exports'
    */
-  dirs: string | (string | PageOptions)[]
+  dirs: string | PageOptions
   /**
    * Paths to the directory output bundle files
    * @default 'dist'
@@ -83,7 +68,7 @@ export type UserOptions = Partial<Options>
 export interface ResolvedOptions
   extends Omit<
     Options,
-    'pagesDir' | 'replaceSquareBrackets' | 'nuxtStyle' | 'syncIndex' | 'moduleId'
+    'pagesDir' | 'replaceSquareBrackets' | 'nuxtStyle' | 'syncIndex' | 'moduleId' | 'dirs'
   > {
   /**
    * Resolves to the `root` value from Vite config.
@@ -93,7 +78,7 @@ export interface ResolvedOptions
   /**
    * Resolved page dirs
    */
-  dirs: PageOptions[]
+  dirs: PageOptions
   /**
    * RegExp to match extensions
    */

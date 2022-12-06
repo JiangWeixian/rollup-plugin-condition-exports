@@ -23,10 +23,8 @@ export function countSlash(value: string) {
 }
 
 function isPagesDir(path: string, options: ResolvedOptions) {
-  for (const page of options.dirs) {
-    const dirPath = slash(resolve(options.root, page.dir))
-    if (path.startsWith(dirPath)) return true
-  }
+  const dirPath = slash(resolve(options.root, options.dirs.dir))
+  if (path.startsWith(dirPath)) return true
   return false
 }
 

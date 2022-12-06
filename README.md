@@ -99,7 +99,7 @@ enable setup `typesVersions` field.
 
 ### `dirs`
 
-- types: `string | (string | PageOptions)[]`
+- types: `string | PageOptions`
 - default: `src/exports`
 
 Path to exports api directory

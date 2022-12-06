@@ -1,4 +1,5 @@
-import { extname, join, resolve } from 'path'
+import { extname, join, resolve, relative } from 'path'
+import { cleanDoubleSlashes } from 'ufo'
 import { slash, toArray } from '@antfu/utils'
 import { resolveOptions } from './options'
 import { getPageFiles } from './files'
@@ -33,10 +34,8 @@ export class PackageContext {
     debug.pages('add', path)
     for (const p of toArray(path)) {
       const pageDirPath = slash(resolve(this.root, pageDir.dir))
-      const path = p.replace(`${pageDirPath}`, this.options.outDir).replace(extname(p), '')
-      const route = slash(
-        join(pageDir.baseRoute, p.replace(`${pageDirPath}/`, '').replace(extname(p), '')),
-      )
+      const path = slash(p.replace(`${pageDirPath}`, this.options.outDir).replace(extname(p), ''))
+      const route = slash(join(p.replace(`${pageDirPath}/`, '').replace(extname(p), '')))
       this._pageRouteMap.set(p, {
         path,
         rawPath: p,
@@ -55,11 +54,20 @@ export class PackageContext {
   }
 
   async resolveInputs() {
-    return [...this._pageRouteMap.values()].map((v) => v.rawPath)
+    const inputs = [...this._pageRouteMap.values()].map((v) => v.rawPath)
+    return Object.assign(
+      {},
+      Object.fromEntries(
+        inputs.map((name) => {
+          const filePath = relative(join(this.options.root, this.options.dirs.dir), name)
+          return [cleanDoubleSlashes(filePath).replace(extname(filePath), ''), name]
+        }),
+      ),
+    )
   }
 
   async searchGlob() {
-    const pageDirFiles = this.options.dirs.map((page) => {
+    const pageDirFiles = [this.options.dirs].map((page) => {
       const pagesDirPath = slash(resolve(this.options.root, page.dir))
       const files = getPageFiles(pagesDirPath, this.options)
       debug.search(page.dir, files)

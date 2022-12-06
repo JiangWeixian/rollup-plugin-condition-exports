@@ -22,29 +22,29 @@
     ".": {
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/exports/index.d.ts"
     },
     "./md": {
       "require": "./dist/md.cjs",
       "import": "./dist/md.mjs",
-      "types": "./dist/md.d.ts"
+      "types": "./dist/exports/md.d.ts"
     },
     "./feature": {
       "browser": {
         "require": "./dist/feature/browser.cjs",
         "import": "./dist/feature/browser.mjs",
-        "types": "./dist/feature/browser.d.ts"
+        "types": "./dist/exports/feature/browser.d.ts"
       },
       "node": {
         "require": "./dist/feature/node.cjs",
         "import": "./dist/feature/node.mjs",
-        "types": "./dist/feature/node.d.ts"
+        "types": "./dist/exports/feature/node.d.ts"
       }
     }
   },
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/exports/index.d.ts",
   "scripts": {
     "build": "rimraf dist && DEBUG=rpce* rollup -c --silent"
   },
@@ -71,10 +71,10 @@
   "typesVersions": {
     "*": {
       "md": [
-        "dist/md.d.ts"
+        "dist/exports/md.d.ts"
       ],
       "feature": [
-        "dist/feature/node.d.ts"
+        "dist/exports/feature/node.d.ts"
       ]
     }
   }

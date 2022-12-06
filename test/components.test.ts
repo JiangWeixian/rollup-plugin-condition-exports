@@ -13,7 +13,7 @@ describe('basic', () => {
     )
     await ctx.searchGlob()
     const inputs = await ctx.resolveInputs()
-    expect(inputs.map((v) => v.replace(FIXTURES, ''))).toMatchInlineSnapshot(`
+    expect(Object.values(inputs).map((v) => v.replace(FIXTURES, ''))).toMatchInlineSnapshot(`
       [
         "/components/index.ts",
         "/components/button/index.ts",
