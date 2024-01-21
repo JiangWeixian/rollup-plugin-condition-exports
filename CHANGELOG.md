@@ -1,5 +1,11 @@
 # rollup-plugin-condition-exports
 
+## 2.0.0-next.4
+
+### Patch Changes
+
+- 62e37ec: change condition field order
+
 ## 2.0.0-next.3
 
 ### Patch Changes
