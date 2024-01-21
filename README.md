@@ -75,11 +75,9 @@ src
   "types": "dist/index.d.ts",
   "typesVersions": {
     "*": {
-      "feature": [
-        "dist/feature/node.d.ts",
-      ],
-    },
-  },
+      "feature": ["dist/feature/node.d.ts"]
+    }
+  }
 }
 ```
 

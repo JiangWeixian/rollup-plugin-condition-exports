@@ -1,8 +1,15 @@
-import { resolve } from 'path'
-import { URLSearchParams } from 'url'
+import { resolve } from 'node:path'
+import { URLSearchParams } from 'node:url'
+
 import { slash } from '@antfu/utils'
-import { cacheAllRouteRE, countSlashRE, dynamicRouteRE, replaceDynamicRouteRE } from './constants'
 import Debug from 'debug'
+
+import {
+  cacheAllRouteRE,
+  countSlashRE,
+  dynamicRouteRE,
+  replaceDynamicRouteRE,
+} from './constants'
 
 import type { ResolvedOptions } from './types'
 
@@ -24,7 +31,9 @@ export function countSlash(value: string) {
 
 function isPagesDir(path: string, options: ResolvedOptions) {
   const dirPath = slash(resolve(options.root, options.dirs.dir))
-  if (path.startsWith(dirPath)) return true
+  if (path.startsWith(dirPath)) {
+    return true
+  }
   return false
 }
 
@@ -41,7 +50,9 @@ export function isCatchAllRoute(routePath: string) {
 }
 
 export function normalizeName(name: string, isDynamic: boolean) {
-  if (!isDynamic) return name
+  if (!isDynamic) {
+    return name
+  }
 
   return name.replace(replaceDynamicRouteRE, '$1')
 }
@@ -52,7 +63,9 @@ export function buildReactRoutePath(node: string): string | undefined {
   const normalizedName = normalizeName(node, isDynamic)
 
   if (isDynamic) {
-    if (isCatchAll) return '*'
+    if (isCatchAll) {
+      return '*'
+    }
 
     return `:${normalizedName}`
   }

@@ -3,7 +3,7 @@ name: Node.js CI
 on:
   push:
   pull_request:
-    branches: [master,release]
+    branches: [master, release]
 
 jobs:
   test:
@@ -25,7 +25,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install pnpm
         run: npm i pnpm@6.22.2 -g
-      - name: Install 
+      - name: Install
         run: |
           pnpm install --frozen-lockfile=false
       - name: Test

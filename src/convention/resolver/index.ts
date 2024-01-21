@@ -1,10 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { buildReactRoutePath, countSlash, debug } from '../utils'
-import type { Optional, PageResolver, ResolvedOptions } from '../types'
-import type { PackageContext } from '../context'
+import { join } from 'node:path'
 
-import { join } from 'path'
 import { isEmpty } from 'lodash-es'
+
+import {
+  buildReactRoutePath,
+  countSlash,
+  debug,
+} from '../utils'
+
+import type { PackageContext } from '../context'
+import type {
+  Optional,
+  PageResolver,
+  ResolvedOptions,
+} from '../types'
 
 export interface ReactRouteBase {
   children?: ReactRouteBase[]
@@ -22,9 +32,13 @@ export interface ReactRoute extends Omit<Optional<ReactRouteBase, 'path'>, 'chil
 
 function prepareRoutes(routes: ReactRoute[], options: ResolvedOptions, parent?: ReactRoute) {
   for (const route of routes) {
-    if (parent) route.path = route.path?.replace(/^\//, '')
+    if (parent) {
+      route.path = route.path?.replace(/^\//, '')
+    }
 
-    if (route.children) route.children = prepareRoutes(route.children, options, route)
+    if (route.children) {
+      route.children = prepareRoutes(route.children, options, route)
+    }
   }
 
   return routes
@@ -58,10 +72,11 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
 
       const isIndexRoute = node.endsWith('index')
 
-      if (!route.path && isIndexRoute)
+      if (!route.path && isIndexRoute) {
         route.path = ''
-       else if (!isIndexRoute)
+      } else if (!isIndexRoute) {
         route.path = buildReactRoutePath(node)
+      }
 
       // Check parent exits
       const parent = parentRoutes.find((parent) => {
@@ -69,8 +84,9 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
       })
 
       // only enable condition exports on dirs
-      if (parent)
+      if (parent) {
         route.condition = parent.element ? undefined : route.condition
+      }
 
       // only nested route on condition exports dir
       if (parent && route.condition) {
@@ -112,8 +128,7 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
         pkg.main = `${route.element}.${ctx.options.cjsExtension}`
         pkg.module = `${route.element}.${ctx.options.esmExtension}`
         pkg.types = formatDeclarationPath(route.element!, ctx)
-      }
- else {
+      } else {
         pkg.typesVersions[`${path.slice(2)}`] = [formatDeclarationPath(route.element!, ctx)]
       }
       pkg.exports[`${path}`] = pkg.exports[`${path}`] ?? {}
@@ -126,8 +141,9 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
       subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
       subExports.types = `./${formatDeclarationPath(route.element!, ctx)}`
     }
-    if (route.children)
+    if (route.children) {
       _resolvePkg(route.children, ctx, pkg)
+    }
   }
 }
 

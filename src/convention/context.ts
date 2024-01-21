@@ -1,12 +1,23 @@
-import { extname, join, resolve, relative } from 'path'
-import { cleanDoubleSlashes } from 'ufo'
-import { slash, toArray } from '@antfu/utils'
-import { resolveOptions } from './options'
-import { getPageFiles } from './files'
-import { debug } from './utils'
-import { resolver } from './resolver'
+import {
+  extname,
+  join,
+  relative,
+  resolve,
+} from 'node:path'
 
-import type { PageOptions, ResolvedOptions, UserOptions } from './types'
+import { slash, toArray } from '@antfu/utils'
+import { cleanDoubleSlashes } from 'ufo'
+
+import { getPageFiles } from './files'
+import { resolveOptions } from './options'
+import { resolver } from './resolver'
+import { debug } from './utils'
+
+import type {
+  PageOptions,
+  ResolvedOptions,
+  UserOptions,
+} from './types'
 
 export interface PageRoute {
   path: string
@@ -30,7 +41,7 @@ export class PackageContext {
     debug.options(this.options)
   }
 
-  async addPage(path: string | string[], pageDir: PageOptions) {
+  async addPage(path: string[] | string, pageDir: PageOptions) {
     debug.pages('add', path)
     for (const p of toArray(path)) {
       const pageDirPath = slash(resolve(this.root, pageDir.dir))
@@ -54,7 +65,7 @@ export class PackageContext {
   }
 
   async resolveInputs() {
-    const inputs = [...this._pageRouteMap.values()].map((v) => v.rawPath)
+    const inputs = [...this._pageRouteMap.values()].map(v => v.rawPath)
     return Object.assign(
       {},
       Object.fromEntries(
@@ -73,11 +84,13 @@ export class PackageContext {
       debug.search(page.dir, files)
       return {
         ...page,
-        files: files.map((file) => slash(file)),
+        files: files.map(file => slash(file)),
       }
     })
 
-    for (const page of pageDirFiles) await this.addPage(page.files, page)
+    for (const page of pageDirFiles) {
+      await this.addPage(page.files, page)
+    }
   }
 
   get pageRouteMap() {

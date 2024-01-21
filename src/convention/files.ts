@@ -1,6 +1,8 @@
-import { join } from 'path'
+import { join } from 'node:path'
+
 import { slash } from '@antfu/utils'
 import fg from 'fast-glob'
+
 import { extsToGlob } from './utils'
 
 import type { PageOptions, ResolvedOptions } from './types'
