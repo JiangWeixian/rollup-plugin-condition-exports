@@ -58,11 +58,10 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
 
       const isIndexRoute = node.endsWith('index')
 
-      if (!route.path && isIndexRoute) {
+      if (!route.path && isIndexRoute)
         route.path = ''
-      } else if (!isIndexRoute) {
+       else if (!isIndexRoute)
         route.path = buildReactRoutePath(node)
-      }
 
       // Check parent exits
       const parent = parentRoutes.find((parent) => {
@@ -70,9 +69,8 @@ async function computeExports(ctx: PackageContext): Promise<ReactRoute[]> {
       })
 
       // only enable condition exports on dirs
-      if (parent) {
+      if (parent)
         route.condition = parent.element ? undefined : route.condition
-      }
 
       // only nested route on condition exports dir
       if (parent && route.condition) {
@@ -114,7 +112,8 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
         pkg.main = `${route.element}.${ctx.options.cjsExtension}`
         pkg.module = `${route.element}.${ctx.options.esmExtension}`
         pkg.types = formatDeclarationPath(route.element!, ctx)
-      } else {
+      }
+ else {
         pkg.typesVersions[`${path.slice(2)}`] = [formatDeclarationPath(route.element!, ctx)]
       }
       pkg.exports[`${path}`] = pkg.exports[`${path}`] ?? {}
@@ -123,13 +122,12 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
         pkg.exports[`${path}`][route.condition] = pkg.exports[`${path}`][route.condition] ?? {}
         subExports = pkg.exports[`${path}`][route.condition]
       }
-      subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
       subExports.import = `./${route.element}.${ctx.options.esmExtension}`
+      subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
       subExports.types = `./${formatDeclarationPath(route.element!, ctx)}`
     }
-    if (route.children) {
+    if (route.children)
       _resolvePkg(route.children, ctx, pkg)
-    }
   }
 }
 
