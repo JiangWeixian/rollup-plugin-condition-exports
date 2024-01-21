@@ -1,10 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { buildReactRoutePath, countSlash, debug } from '../utils'
-import type { Optional, PageResolver, ResolvedOptions } from '../types'
-import type { PackageContext } from '../context'
+import { join } from 'node:path'
 
-import { join } from 'path'
 import { isEmpty } from 'lodash-es'
+
+import {
+  buildReactRoutePath,
+  countSlash,
+  debug,
+} from '../utils'
+
+import type { PackageContext } from '../context'
+import type {
+  Optional,
+  PageResolver,
+  ResolvedOptions,
+} from '../types'
 
 export interface ReactRouteBase {
   children?: ReactRouteBase[]
@@ -22,9 +32,13 @@ export interface ReactRoute extends Omit<Optional<ReactRouteBase, 'path'>, 'chil
 
 function prepareRoutes(routes: ReactRoute[], options: ResolvedOptions, parent?: ReactRoute) {
   for (const route of routes) {
-    if (parent) route.path = route.path?.replace(/^\//, '')
+    if (parent) {
+      route.path = route.path?.replace(/^\//, '')
+    }
 
-    if (route.children) route.children = prepareRoutes(route.children, options, route)
+    if (route.children) {
+      route.children = prepareRoutes(route.children, options, route)
+    }
   }
 
   return routes
@@ -123,8 +137,8 @@ const _resolvePkg = (routes: ReactRoute[], ctx: PackageContext, pkg: any = {}) =
         pkg.exports[`${path}`][route.condition] = pkg.exports[`${path}`][route.condition] ?? {}
         subExports = pkg.exports[`${path}`][route.condition]
       }
-      subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
       subExports.import = `./${route.element}.${ctx.options.esmExtension}`
+      subExports.require = `./${route.element}.${ctx.options.cjsExtension}`
       subExports.types = `./${formatDeclarationPath(route.element!, ctx)}`
     }
     if (route.children) {

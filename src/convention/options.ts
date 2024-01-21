@@ -1,9 +1,11 @@
-import { resolve, sep } from 'path'
+import { resolve, sep } from 'node:path'
+
 import { slash } from '@antfu/utils'
 import { withoutLeadingSlash, withoutTrailingSlash } from 'ufo'
-import { getPageDirs } from './files'
 
 import { defaultExtensions } from './constants'
+import { getPageDirs } from './files'
+
 import type { ResolvedOptions, UserOptions } from './types'
 
 function resolvePageDirs(dirs: NonNullable<UserOptions['dirs']>, root: string, exclude: string[]) {

@@ -1,7 +1,8 @@
-import type { PackageContext } from './context'
+/* eslint-disable etc/no-t */
 import type { Awaitable } from '@antfu/utils'
+import type { PackageContext } from './context'
 
-export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
+export type Optional<T, K extends keyof T> = Omit<T, K> & Pick<Partial<T>, K>
 
 export interface PageOptions {
   /**
@@ -29,7 +30,7 @@ interface Options {
    * Paths to the directory to search for page components.
    * @default 'src/exports'
    */
-  dirs: string | PageOptions
+  dirs: PageOptions | string
   /**
    * Paths to the directory output bundle files
    * @default 'dist'
@@ -75,7 +76,7 @@ export type UserOptions = Partial<Options>
 export interface ResolvedOptions
   extends Omit<
     Options,
-    'pagesDir' | 'replaceSquareBrackets' | 'nuxtStyle' | 'syncIndex' | 'moduleId' | 'dirs'
+    'dirs' | 'moduleId' | 'nuxtStyle' | 'pagesDir' | 'replaceSquareBrackets' | 'syncIndex'
   > {
   /**
    * Resolves to the `root` value from Vite config.

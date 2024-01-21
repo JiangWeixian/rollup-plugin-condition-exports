@@ -1,10 +1,12 @@
-import type { Plugin } from 'rollup'
-import path from 'path'
+import path from 'node:path'
+
 import fs from 'fs-extra'
 
-import type { UserOptions } from './convention/types'
 import { PackageContext } from './convention/context'
 import { debug } from './convention/utils'
+
+import type { Plugin } from 'rollup'
+import type { UserOptions } from './convention/types'
 
 const NAME = 'rpce'
 
